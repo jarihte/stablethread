@@ -42,17 +42,28 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
     amount,
     address,
     reference,
+    splToken,
   } = req.query;
 
   // get the receiver from the database by name
   const recipient = new PublicKey(address as string);
 
   // Create a transaction to transfer the amount to the receiver.
-  const transaction = await createTransfer(connection, sender, {
-    recipient,
-    amount: new BigNumber(amount as string),
-    reference: new PublicKey(reference as string),
-  }, { commitment: 'confirmed' });
+  let transaction;
+  if (splToken) {
+    transaction = await createTransfer(connection, sender, {
+      recipient,
+      amount: new BigNumber(amount as string),
+      reference: new PublicKey(reference as string),
+      splToken: new PublicKey(splToken as string),
+    }, { commitment: 'confirmed' });
+  } else {
+    transaction = await createTransfer(connection, sender, {
+      recipient,
+      amount: new BigNumber(amount as string),
+      reference: new PublicKey(reference as string),
+    }, { commitment: 'confirmed' });
+  }
 
   // Serialize and return the unsigned transaction.
   const serializedTransaction = transaction.serialize({

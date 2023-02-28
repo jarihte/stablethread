@@ -33,15 +33,17 @@ export default async function Component() {
     });
   });
 
-  // the reference to track the transfer
+  // the reference to track the transfer - required parameter
   const reference = new Keypair().publicKey.toBase58();
-  // the amount to transfer in SOL
+  // the amount to transfer - required parameter
   const amount = '0.01';
-  // the address to receive the transfer
+  // the address to receive the transfer - required parameter
   const address = '2LRnpYKkfGQBBGAJbU5V6uKrYVH57uH5gx75ksbbNbLn';
+  // the SPL token to transfer - in this case USDC - optional parameter
+  const splToken = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
   
   const qrLink = createQR(encodeURL({
-    link: new URL(\`https://stablethread.com/api/qr?amount=\${amount}&address=\${address}&reference=\${reference}\`),
+    link: new URL(\`https://stablethread.com/api/qr?amount=\${amount}&address=\${address}&reference=\${reference}&splToken=\${splToken}\`),
   }));
 
   const pngRaw = await qrLink.getRawData();

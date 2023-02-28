@@ -2,7 +2,7 @@
 
 ## StableThread
 
-StableThead is a Solana Pay platform for QR generation and real-time notifications.
+StableThead is a Solana Pay platform for QR generation and real-time notifications
 
 This project demonstrates the usage of:
 * Solana Pay QR Codes using the Solana Pay library

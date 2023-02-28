@@ -2,16 +2,14 @@
 
 ## StableThread
 
-StableThead is a Solana Pay platform for QR generation, real-time payment notifications, and subscriptions.
+StableThead is a Solana Pay platform for QR generation and real-time payment notifications.
 
 ### Providers
 * [Solana Pay](https://solanapay.com)
 * [Helius RPC and Webhook](https://helius.xyz)
-* [Streamflow](https://streamflow.finance)
-
 ### Grizzlython
 * Created for the [Solana Grizzython Hackathon](https://solana.com/grizzlython)
-* Inspired by [Jon Wong](https://build.superteam.fun/article/build-a-webhook-service-for-solana-pay) and [Streamflow](https://build.superteam.fun/article/subscriptions-management-platform)
+* Inspired by [Jon Wong](https://build.superteam.fun/article/build-a-webhook-service-for-solana-pay)
 
 ### Links
 * Live at [StableThread](https://stablethread.com)

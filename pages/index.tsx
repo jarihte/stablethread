@@ -49,7 +49,7 @@ export default async function Component() {
   const splToken = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
 
   // the partner address to collect 30% of the StableThread fee - optional parameter
-  const partner = '2LRnpYKkfGQBBGAJbU5V6uKrYVH57uH5gx75ksbbNbLn';
+  const partner = '6otdmKAVQXrYFWjM1mueg61bFnTHARimH7jfGX4WxpgV';
   
   // create the query string
   const qString = qs.stringify({ amount, to, reference, splToken, partner });

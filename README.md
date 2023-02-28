@@ -6,7 +6,7 @@ StableThead is a Solana Pay platform for QR generation and real-time notificatio
 
 This project demonstrates the usage of:
 * Solana Pay QR Codes using the Solana Pay library
-* Socket.io and Next.js integration with a Helius Webhook
+* Websockets combined with a Helius webhook
 
 ### Grizzlython
 * Created for the [Solana Grizzython Hackathon](https://solana.com/grizzython)

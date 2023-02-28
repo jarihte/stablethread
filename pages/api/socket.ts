@@ -23,6 +23,7 @@ const ioHandler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
       path: '/api/socket',
       cors: {
         origin: '*',
+        methods: ['GET', 'POST'],
       },
     });
 

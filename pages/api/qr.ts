@@ -15,7 +15,7 @@ async function get(req: NextApiRequest, res: NextApiResponse) {
   });
   res.status(200).json({
     label: 'StableThread',
-    icon: 'https://stablethread.com/stablethread-icon.png',
+    icon: 'https://stablethread.com/images/stablethread-icon.png',
   });
 }
 

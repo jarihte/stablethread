@@ -25,7 +25,7 @@ function NavBar() {
             <Nav className="mr-auto" navbar data-testid="navbar-items">
               <NavItem style={{ paddingTop: '5px' }}>
                 <PageLink href="https://stablethread.com" className="nav-link" testId="navbar-home" icon={null} tabIndex={undefined}>
-                  <img src="/stablethread-icon.png" alt="logo" height="50px" />
+                  <img src="/images/stablethread-icon.png" alt="logo" height="50px" />
                 </PageLink>
               </NavItem>
               <NavItem style={{ paddingTop: '18px' }}>

@@ -1,4 +1,4 @@
-![StableThread Logo](https://stablethread.com/stablethread.png)
+![StableThread Logo](https://stablethread.com/images/stablethread.png)
 
 ## StableThread
 

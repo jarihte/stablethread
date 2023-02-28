@@ -106,7 +106,12 @@ const component : NextPageWithLayout = function Page() {
         />
         ,
       </div>
-
+      <div className="text-center hero" style={{ marginTop: '100px' }}>
+        <h1>Customers</h1>
+        <a href="https://www.circlesub.com/">
+          <img src="/images/circlesub.svg" alt="CircleSub" width="80%" />
+        </a>
+      </div>
     </>
   );
 };

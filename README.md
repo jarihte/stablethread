@@ -12,6 +12,8 @@ This project was created for the [Solana Grizzython Hackathon](https://solana.co
 
 This project is live at [https://stablethread.com](https://stablethread.com)
 
+A live example using StableThread and CircleSub is [here](https://circlesub.com/tip/komdodx)
+
 ### Required ENV Vars:
 * HELIUS_RPC={Solana RPC HTTPS URL}
 * HELIUS_API_KEY={Helius API Key}

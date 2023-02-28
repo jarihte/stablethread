@@ -2,17 +2,19 @@
 
 ## StableThread
 
-This Next.js project is a Solana Pay platform for QR generation and real-time notifications.
+StableThead is a Solana Pay platform for QR generation and real-time notifications written in Next.js in TypeScript.
 
 This project demonstrates the usage of:
-* Solana Pay QR Codes using the Solana token
-* Socket.io and Next.js integration with Helius Webhook
+* Solana Pay QR Codes using the Solana Pay library
+* Socket.io and Next.js integration with a Helius Webhook
 
-This project was created for the [Solana Grizzython Hackathon](https://solana.com/grizzython)
+### Grizzlython
+* Created for the [Solana Grizzython Hackathon](https://solana.com/grizzython)
+* Inspired by [Jon Wong](https://build.superteam.fun/article/build-a-webhook-service-for-solana-pay)
 
-This project is live at [https://stablethread.com](https://stablethread.com)
-
-A live example using StableThread and CircleSub is [here](https://circlesub.com/tip/komdodx)
+### Links
+* Live at [StableThread](https://stablethread.com)
+* Live example at [CircleSub](https://circlesub.com/tip/komdodx)
 
 ### Required ENV Vars:
 * HELIUS_RPC={Solana RPC HTTPS URL}

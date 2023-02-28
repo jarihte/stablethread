@@ -36,7 +36,7 @@ export default async function Component() {
     });
   });
 
-  // the reference to track the transfer - required parameter
+  // the reference to track the transfer (must be unique per transaction) - required parameter
   const reference = new Keypair().publicKey.toBase58();
 
   // the amount to transfer - required parameter

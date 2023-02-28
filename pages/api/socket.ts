@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import type { Socket as NetSocket } from 'net';
 import type { Server as IOServer } from 'socket.io';
 import { Server as ServerIO } from 'socket.io';
+import NextCors from 'nextjs-cors';
 
 interface SocketServer extends HTTPServer {
   io: IOServer | undefined
@@ -17,13 +18,21 @@ interface NextApiResponseWithSocket extends NextApiResponse {
 }
 
 // eslint-disable-next-line max-len
-const ioHandler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
+const ioHandler = async (req: NextApiRequest, res: NextApiResponseWithSocket) => {
+  await NextCors(req, res, {
+    // Options
+    methods: ['GET', 'HEAD', 'POST'],
+    origin: '*',
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  });
+
   if (!res.socket.server.io) {
     const io = new ServerIO(res.socket.server, {
       path: '/api/socket',
       cors: {
         origin: '*',
-        methods: ['GET', 'POST'],
+        methods: ['GET', 'HEAD', 'POST'],
+        optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
       },
     });
 

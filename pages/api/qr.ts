@@ -4,8 +4,15 @@ import { Connection, PublicKey } from '@solana/web3.js';
 import BigNumber from 'bignumber.js';
 import { Helius } from 'helius-sdk';
 import { NextApiRequest, NextApiResponse } from 'next/types';
+import NextCors from 'nextjs-cors';
 
 async function get(req: NextApiRequest, res: NextApiResponse) {
+  await NextCors(req, res, {
+    // Options
+    methods: ['GET'],
+    origin: '*',
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  });
   res.status(200).json({
     label: 'StableThread',
     icon: 'https://stablethread.com/stablethread-icon.png',
@@ -13,6 +20,13 @@ async function get(req: NextApiRequest, res: NextApiResponse) {
 }
 
 async function post(req: NextApiRequest, res: NextApiResponse) {
+  await NextCors(req, res, {
+    // Options
+    methods: ['POST'],
+    origin: '*',
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  });
+
   // Account provided in the transaction request body by the wallet.
   const accountField = req.body?.account;
   if (!accountField) throw new Error('missing account');

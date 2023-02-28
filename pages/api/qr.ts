@@ -62,14 +62,13 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
 
   // Convert the serialized transaction to base64.
   const base64Transaction = serializedTransaction.toString('base64');
-  const message = 'Thanks for the tip!';
 
   // Append the address to the webhook.
   const helius = new Helius(process.env.HELIUS_API_KEY as string);
   await helius.appendAddressesToWebhook(process.env.HELIUS_WEBHOOK_ID as string, [address as string]);
 
-  // Return the base64 encoded transaction and the message.
-  res.status(200).send({ transaction: base64Transaction, message });
+  // Return the base64 encoded transaction.
+  res.status(200).send({ transaction: base64Transaction });
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

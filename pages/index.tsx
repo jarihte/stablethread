@@ -15,6 +15,7 @@ import { createQR, encodeURL } from '@solana/pay';
 import { Keypair } from '@solana/web3.js';
 import React, { useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
+import qs from 'qs';
 import { DefaultEventsMap } from 'socket.io/dist/typed-events';
 
 type TxData = {
@@ -22,9 +23,11 @@ type TxData = {
 };
 
 export default async function Component() {
+  // create the state to hold the QR code and socket connection
   const [qr, setQR] = useState<string>();
   const [msgSocket, setMsgSocket] = useState<Socket<DefaultEventsMap, DefaultEventsMap>>();
 
+  // create the socket connection
   useEffect(() => {
     let socket: Socket | null = null;
     fetch('https://stablethread.com/api/socket').finally(() => {
@@ -35,19 +38,29 @@ export default async function Component() {
 
   // the reference to track the transfer - required parameter
   const reference = new Keypair().publicKey.toBase58();
+
   // the amount to transfer - required parameter
   const amount = '0.01';
+  
   // the address to receive the transfer - required parameter
   const address = '2LRnpYKkfGQBBGAJbU5V6uKrYVH57uH5gx75ksbbNbLn';
+  
   // the SPL token to transfer - in this case USDC - optional parameter
   const splToken = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
   
+  // create the query string
+  const qString = qs.stringify({ amount, address, reference, splToken });
+
+  // create the QR code
   const qrLink = createQR(encodeURL({
-    link: new URL(\`https://stablethread.com/api/qr?amount=\${amount}&address=\${address}&reference=\${reference}&splToken=\${splToken}\`),
+    link: new URL(\`https://stablethread.com/api/qr?{qString}\`),
   }));
 
+  // get the raw data to create QR code image
   const pngRaw = await qrLink.getRawData();
 
+  // if the QR code is created, set state the QR code 
+  // and wait for the transfer to complete
   if (pngRaw && msgSocket) {
     const png = URL.createObjectURL(pngRaw);
     setQR(png);
@@ -58,6 +71,7 @@ export default async function Component() {
       }
     });
   }
+  // render the QR code
   if (qr) {
     return (
       <div>

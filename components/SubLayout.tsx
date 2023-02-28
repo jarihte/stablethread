@@ -12,9 +12,9 @@ function SubLayout({ children }: ILayout) {
   return (
     <>
       <Head>
-        <title>StableThread - Simple Solana Pay</title>
+        <title>StableThread - Solana Pay made simple</title>
         <link rel="shortcut icon" href="/favicon.png" />
-        <meta name="description" content="Use Solana Pay simply!" />
+        <meta name="description" content="Solana Pay made simple" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta httpEquiv="content-language" content="en" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />

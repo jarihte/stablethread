@@ -17,7 +17,17 @@ const contentData = [
   {
     title: 'No Account Required',
     description:
-      'Connect to our API and start sending and receiving payments.',
+      'Connect to our API and start sending and receiving payments as a partner.',
+  },
+  {
+    title: 'Subscriptions',
+    description:
+      'Create subscriptions to send payments on a recurring basis.',
+  },
+  {
+    title: 'Fee Splitting',
+    description:
+      'A fee of 0.01 SOL is charged per transaction and 70% goes to StableThread while 30% goes to the partner.',
   },
 ];
 

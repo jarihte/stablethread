@@ -40,13 +40,14 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
   // Get values from the query string
   const {
     amount,
-    address,
+    to,
     reference,
     splToken,
+    partner,
   } = req.query;
 
   // get the receiver from the database by name
-  const recipient = new PublicKey(address as string);
+  const recipient = new PublicKey(to as string);
 
   // Create a transaction to transfer the amount to the receiver.
   let transaction;
@@ -65,6 +66,35 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
     }, { commitment: 'confirmed' });
   }
 
+  // Charge a fee in SOL.
+  const totalFee = new BigNumber(process.env.FEE_AMOUNT as string);
+
+  // If there is a partner, split the fee between the two.
+  if (partner) {
+    const stFee = totalFee.multipliedBy(process.env.FEE_PERCENTAGE as string);
+    const partnerFee = totalFee.minus(stFee);
+
+    const stFeeTransaction = await createTransfer(connection, sender, {
+      recipient: new PublicKey(process.env.BANK_ADDRESS as string),
+      amount: stFee,
+    }, { commitment: 'confirmed' });
+
+    const partnerFeeTransaction = await createTransfer(connection, sender, {
+      recipient: new PublicKey(partner as string),
+      amount: partnerFee,
+    }, { commitment: 'confirmed' });
+
+    transaction.add(stFeeTransaction);
+    transaction.add(partnerFeeTransaction);
+  } else {
+    const stFeeTransaction = await createTransfer(connection, sender, {
+      recipient,
+      amount: totalFee,
+    }, { commitment: 'confirmed' });
+
+    transaction.add(stFeeTransaction);
+  }
+
   // Serialize and return the unsigned transaction.
   const serializedTransaction = transaction.serialize({
     verifySignatures: false,
@@ -76,7 +106,7 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
 
   // Append the address to the webhook.
   const helius = new Helius(process.env.HELIUS_API_KEY as string);
-  await helius.appendAddressesToWebhook(process.env.HELIUS_WEBHOOK_ID as string, [address as string]);
+  await helius.appendAddressesToWebhook(process.env.HELIUS_WEBHOOK_ID as string, [to as string]);
 
   // Return the base64 encoded transaction.
   res.status(200).send({ transaction: base64Transaction });

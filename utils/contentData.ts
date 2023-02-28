@@ -17,7 +17,7 @@ const contentData = [
   {
     title: 'No Account Required',
     description:
-      'Just connect to our API and start sending and receiving payments.',
+      'Connect to our API and start sending and receiving payments.',
   },
 ];
 

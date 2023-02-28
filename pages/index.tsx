@@ -53,7 +53,7 @@ export default async function Component() {
 
   // create the QR code
   const qrLink = createQR(encodeURL({
-    link: new URL(\`https://stablethread.com/api/qr?{qString}\`),
+    link: new URL(\`https://stablethread.com/api/qr?\${qString}\`),
   }));
 
   // get the raw data to create QR code image

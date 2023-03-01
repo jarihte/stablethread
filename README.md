@@ -11,6 +11,9 @@ StableThead is a Solana Pay platform for QR generation and real-time payment not
 * Created for the [Solana Grizzython Hackathon](https://solana.com/grizzlython)
 * Inspired by [Jon Wong](https://build.superteam.fun/article/build-a-webhook-service-for-solana-pay)
 
+### Pitch Deck
+* [StableThread Pitch Deck](https://www.canva.com/design/DAFb850S5Ho/xr63Lzlgi-rrxIgGx5Q5Ew/view?utm_content=DAFb850S5Ho&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+
 ### Links
 * Live at [StableThread](https://stablethread.com)
 * Live example at [CircleSub](https://circlesub.com/tip/komdodx)

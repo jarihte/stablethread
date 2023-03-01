@@ -2,7 +2,7 @@ const contentData = [
   {
     title: 'Quick QR Generation',
     description:
-      'StableThread enables you to write one front-end API call using Solana Pay.',
+      'StableThread enables you to write one front-end API call to use Solana Pay.',
   },
   {
     title: 'Real-time Notifications',

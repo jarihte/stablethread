@@ -10,7 +10,7 @@ const contentData = [
       'Receive websocket notifications when transactions complete rather than front-end polling.',
   },
   {
-    title: 'Super-fast Transactions',
+    title: 'Instant Transactions',
     description:
       'Helius is the provider used to process transactions quickly and reliably.',
   },

@@ -62,7 +62,7 @@ export default async function Component() {
   // get the raw data to create QR code image
   const pngRaw = await qrLink.getRawData();
 
-  // if the QR code is created, set QR code on page
+  // if the QR code is created and socket exists, set QR code on page
   if (pngRaw && msgSocket) {
     const png = URL.createObjectURL(pngRaw);
     setQR(png);

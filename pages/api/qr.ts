@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable max-len */
 import { getPythProgramKeyForCluster, PythHttpClient } from '@pythnetwork/client';
@@ -50,15 +51,36 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
   } = req.query;
 
   // Check that all required values are present.
-  if (!amount) throw new Error('missing amount');
-  if (!to) throw new Error('missing to');
-  if (!reference) throw new Error('missing reference');
-  if (!partner) throw new Error('missing partner');
-  if (!merchant) throw new Error('missing merchant');
+  if (!amount) {
+    console.error('missing amount');
+    throw new Error('missing amount');
+  }
+  if (!to) {
+    console.error('missing to');
+    throw new Error('missing to');
+  }
+  if (!reference) {
+    console.error('missing reference');
+    throw new Error('missing reference');
+  }
+  if (!partner) {
+    console.error('missing partner');
+    throw new Error('missing partner');
+  }
+  if (!merchant) {
+    console.error('missing merchant');
+    throw new Error('missing merchant');
+  }
 
   // Check that all values are valid.
-  if (new PublicKey(partner as string).equals(new PublicKey(to as string))) throw new Error('partner cannot be the same as the recipient');
-  if (new PublicKey(merchant as string).equals(new PublicKey(partner as string))) throw new Error('merchant and partner must be different accounts');
+  if (new PublicKey(partner as string).equals(new PublicKey(to as string))) {
+    console.error('partner cannot be the same as the recipient');
+    throw new Error('partner cannot be the same as the recipient');
+  }
+  if (new PublicKey(merchant as string).equals(new PublicKey(partner as string))) {
+    console.error('merchant cannot be the same as the partner');
+    throw new Error('merchant cannot be the same as the partner');
+  }
 
   // get the receiver from the database by name
   const recipient = new PublicKey(to as string);

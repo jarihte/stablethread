@@ -43,11 +43,10 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
   // Get values from the query string
   const {
     amount,
-    to,
+    merchant,
     reference,
     splToken,
     partner,
-    merchant,
   } = req.query;
 
   // Check that all required values are present.
@@ -55,9 +54,9 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
     console.error('missing amount');
     throw new Error('missing amount');
   }
-  if (!to) {
-    console.error('missing to');
-    throw new Error('missing to');
+  if (!merchant) {
+    console.error('missing merchant');
+    throw new Error('missing merchant');
   }
   if (!reference) {
     console.error('missing reference');
@@ -67,23 +66,15 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
     console.error('missing partner');
     throw new Error('missing partner');
   }
-  if (!merchant) {
-    console.error('missing merchant');
-    throw new Error('missing merchant');
-  }
 
   // Check that all values are valid.
-  if (new PublicKey(partner as string).equals(new PublicKey(to as string))) {
-    console.error('partner cannot be the same as the recipient');
-    throw new Error('partner cannot be the same as the recipient');
-  }
-  if (new PublicKey(merchant as string).equals(new PublicKey(partner as string))) {
-    console.error('merchant cannot be the same as the partner');
-    throw new Error('merchant cannot be the same as the partner');
+  if (new PublicKey(partner as string).equals(new PublicKey(merchant as string))) {
+    console.error('partner address cannot be the same as the merchant address');
+    throw new Error('partner address cannot be the same as the merchant address');
   }
 
   // get the receiver from the database by name
-  const recipient = new PublicKey(to as string);
+  const recipient = new PublicKey(merchant as string);
 
   // Create a transaction to transfer the amount to the receiver.
   let transaction;
@@ -133,7 +124,7 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
   }, { commitment: 'confirmed' });
 
   const merchantFeeTransaction = await createTransfer(connection, sender, {
-    recipient: new PublicKey(merchant as string),
+    recipient,
     amount: merchantFee,
   }, { commitment: 'confirmed' });
 
@@ -152,7 +143,7 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
 
   // Append the address to the webhook.
   const helius = new Helius(process.env.HELIUS_API_KEY as string);
-  await helius.appendAddressesToWebhook(process.env.HELIUS_WEBHOOK_ID as string, [to as string]);
+  await helius.appendAddressesToWebhook(process.env.HELIUS_WEBHOOK_ID as string, [merchant as string]);
 
   // Return the base64 encoded transaction.
   res.status(200).send({ transaction: base64Transaction });

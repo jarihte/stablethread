@@ -51,7 +51,7 @@ export default async function Component() {
   // the partner address to collect 20% of the StableThread fee (must be not to or merchant) - required parameter
   const partner = '6otdmKAVQXrYFWjM1mueg61bFnTHARimH7jfGX4WxpgV';
 
-  // the merchant address to collect 10% of the StableThread fee (must be not partner) - required parameter
+  // the merchant address to collect 10% of the StableThread fee (must be not partner - can be to) - required parameter
   const merchant = 'BS2AHiggYfEgLswZBRzQhCG6xkaYphdFxqGN2xL5hCMd';
   
   // create the query string

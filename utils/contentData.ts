@@ -17,7 +17,7 @@ const contentData = [
   {
     title: 'Fee Structure',
     description:
-      'A fee of 75¢ USD in SOL is charged per transaction to the shopper while 70/20/10% of the fee is split to StableThread/Partner/Merchant.',
+      'A fee of 75¢ USD in SOL is charged per transaction to the payee while 70/20/10% of the fee is split to StableThread/Partner/Merchant.',
   },
 ];
 

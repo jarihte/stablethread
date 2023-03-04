@@ -69,6 +69,7 @@ export default async function Component() {
     // listen for the transfer event and clear the QR code
     msgSocket.on('transfer', async (txData: TxData) => {
       if (txData.accounts.includes(reference)) {
+        console.log('Transfer complete');
         setQR('');
       }
     });

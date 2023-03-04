@@ -62,16 +62,19 @@ export default async function Component() {
   // get the raw data to create QR code image
   const pngRaw = await qrLink.getRawData();
 
-  // if the QR code is created, set state the QR code 
-  // and wait for the transfer to complete
+  // if the QR code is created, set QR code on page
   if (pngRaw && msgSocket) {
     const png = URL.createObjectURL(pngRaw);
     setQR(png);
+    // listen for the transfer event and clear the QR code
     msgSocket.on('transfer', async (txData: TxData) => {
       if (txData.accounts.includes(reference)) {
-        console.log('Transfer complete');
         setQR('');
       }
+    });
+    // if the socket disconnects, reconnect
+    msgSocket.on('disconnect', () => {
+      msgSocket.connect();
     });
   }
   // render the QR code

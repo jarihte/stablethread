@@ -19,6 +19,7 @@ interface NextApiResponseWithSocket extends NextApiResponse {
 
 // eslint-disable-next-line max-len
 const ioHandler = async (req: NextApiRequest, res: NextApiResponseWithSocket) => {
+  // Enable CORS
   await NextCors(req, res, {
     // Options
     methods: ['GET', 'HEAD', 'POST'],
@@ -26,6 +27,7 @@ const ioHandler = async (req: NextApiRequest, res: NextApiResponseWithSocket) =>
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   });
 
+  // If socket.io is not initialized, initialize it
   if (!res.socket.server.io) {
     const io = new ServerIO(res.socket.server, {
       path: '/api/socket',
@@ -37,14 +39,8 @@ const ioHandler = async (req: NextApiRequest, res: NextApiResponseWithSocket) =>
     });
 
     io.on('connection', (socket) => {
-      socket.on('alert', (data) => {
-        socket.broadcast.emit('alert', data);
-      });
       socket.on('transfer', (data) => {
         socket.broadcast.emit('transfer', data);
-      });
-      socket.on('join', (room) => {
-        socket.join(room);
       });
     });
 

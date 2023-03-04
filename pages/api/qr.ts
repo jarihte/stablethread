@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable max-len */
+import { getPythProgramKeyForCluster, PythHttpClient } from '@pythnetwork/client';
 import { createTransfer } from '@solana/pay';
 import { Connection, PublicKey } from '@solana/web3.js';
 import BigNumber from 'bignumber.js';
@@ -66,13 +68,25 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
     }, { commitment: 'confirmed' });
   }
 
-  // Charge a fee in SOL.
+  // Charge a fee in USD
   const totalFee = new BigNumber(process.env.FEE_AMOUNT as string);
+
+  // Get the price of SOL/USD from Pyth.
+  const solanaClusterName = 'mainnet-beta';
+  const pythClient = new PythHttpClient(connection, getPythProgramKeyForCluster(solanaClusterName));
+  const data = await pythClient.getAssetPricesFromAccounts([new PublicKey('H6ARHf6YXhGYeQfUzQNGk6rDNnLBQKrenN712K4AQJEG')]);
+  if (data[0].confidence! > 2000000) {
+    throw new Error('Price is not confident enough');
+  }
+
+  // Calculate the fee in SOL.
+  const { price } = data[0];
+  const fee = totalFee.dividedBy(price?.toString() as string).decimalPlaces(9, BigNumber.ROUND_UP);
 
   // If there is a partner, split the fee between the two.
   if (partner) {
-    const stFee = totalFee.multipliedBy(process.env.FEE_PERCENTAGE as string);
-    const partnerFee = totalFee.minus(stFee);
+    const stFee = fee.multipliedBy(process.env.FEE_PERCENTAGE as string);
+    const partnerFee = fee.minus(stFee);
 
     const stFeeTransaction = await createTransfer(connection, sender, {
       recipient: new PublicKey(process.env.BANK_ADDRESS as string),
@@ -89,7 +103,7 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
   } else {
     const stFeeTransaction = await createTransfer(connection, sender, {
       recipient,
-      amount: totalFee,
+      amount: fee,
     }, { commitment: 'confirmed' });
 
     transaction.add(stFeeTransaction);

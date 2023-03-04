@@ -17,7 +17,7 @@ const contentData = [
   {
     title: 'Partner Fee Splitting',
     description:
-      'A fee of 0.01 SOL is charged per transaction and 70% goes to StableThread while 30% goes to the partner.',
+      'A fee of 75¢ USD in SOL is charged per transaction and 70% goes to StableThread while 30% goes to the partner.',
   },
 ];
 

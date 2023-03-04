@@ -48,7 +48,7 @@ export default async function Component() {
   // the SPL token to transfer - in this case USDC - optional parameter
   const splToken = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
 
-  // the partner address to collect 20% of the StableThread fee - must not be to address - required parameter
+  // the partner address to collect 20% of the StableThread fee - must not be merchant address - required parameter
   const partner = '6otdmKAVQXrYFWjM1mueg61bFnTHARimH7jfGX4WxpgV';
   
   // create the query string

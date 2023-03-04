@@ -130,8 +130,8 @@ const component : NextPageWithLayout = function Page() {
         ,
       </div>
       <div className="text-center hero" style={{ marginTop: '100px' }}>
-        <h2>Customers</h2>
-        <a href="https://www.circlesub.com/">
+        <h2>Live Example</h2>
+        <a href="https://www.circlesub.com/tip/komdodx">
           <img src="/images/circlesub.svg" alt="CircleSub" width="80%" />
         </a>
       </div>

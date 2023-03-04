@@ -58,7 +58,6 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
 
   // Check that all values are valid.
   if (new PublicKey(partner as string).equals(new PublicKey(to as string))) throw new Error('partner cannot be the same as the recipient');
-  if (new PublicKey(merchant as string).equals(new PublicKey(to as string))) throw new Error('merchant cannot be the same as the recipient');
   if (new PublicKey(merchant as string).equals(new PublicKey(partner as string))) throw new Error('merchant and partner must be different accounts');
 
   // get the receiver from the database by name

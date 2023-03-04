@@ -46,7 +46,20 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
     reference,
     splToken,
     partner,
+    merchant,
   } = req.query;
+
+  // Check that all required values are present.
+  if (!amount) throw new Error('missing amount');
+  if (!to) throw new Error('missing to');
+  if (!reference) throw new Error('missing reference');
+  if (!partner) throw new Error('missing partner');
+  if (!merchant) throw new Error('missing merchant');
+
+  // Check that all values are valid.
+  if (new PublicKey(partner as string).equals(new PublicKey(to as string))) throw new Error('partner cannot be the same as the recipient');
+  if (new PublicKey(merchant as string).equals(new PublicKey(to as string))) throw new Error('merchant cannot be the same as the recipient');
+  if (new PublicKey(merchant as string).equals(new PublicKey(partner as string))) throw new Error('merchant and partner must be different accounts');
 
   // get the receiver from the database by name
   const recipient = new PublicKey(to as string);
@@ -68,8 +81,8 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
     }, { commitment: 'confirmed' });
   }
 
-  // Charge a fee in USD
-  const totalFee = new BigNumber(process.env.FEE_AMOUNT as string);
+  // Charge a fee in USD for the transaction.
+  const totalFee = new BigNumber('0.75');
 
   // Get the price of SOL/USD from Pyth.
   const solanaClusterName = 'mainnet-beta';
@@ -83,31 +96,29 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
   const { price } = data[0];
   const fee = totalFee.dividedBy(price?.toString() as string).decimalPlaces(9, BigNumber.ROUND_UP);
 
-  // If there is a partner, split the fee between the two.
-  if (partner) {
-    const stFee = fee.multipliedBy(process.env.FEE_PERCENTAGE as string);
-    const partnerFee = fee.minus(stFee);
+  // Create transactions to transfer the fee to the bank, partner, and merchant.
+  const partnerFee = fee.multipliedBy('0.2');
+  const merchantFee = fee.multipliedBy('0.1');
+  const stFee = fee.minus(partnerFee).minus(merchantFee);
 
-    const stFeeTransaction = await createTransfer(connection, sender, {
-      recipient: new PublicKey(process.env.BANK_ADDRESS as string),
-      amount: stFee,
-    }, { commitment: 'confirmed' });
+  const stFeeTransaction = await createTransfer(connection, sender, {
+    recipient: new PublicKey(process.env.BANK_ADDRESS as string),
+    amount: stFee,
+  }, { commitment: 'confirmed' });
 
-    const partnerFeeTransaction = await createTransfer(connection, sender, {
-      recipient: new PublicKey(partner as string),
-      amount: partnerFee,
-    }, { commitment: 'confirmed' });
+  const partnerFeeTransaction = await createTransfer(connection, sender, {
+    recipient: new PublicKey(partner as string),
+    amount: partnerFee,
+  }, { commitment: 'confirmed' });
 
-    transaction.add(stFeeTransaction);
-    transaction.add(partnerFeeTransaction);
-  } else {
-    const stFeeTransaction = await createTransfer(connection, sender, {
-      recipient,
-      amount: fee,
-    }, { commitment: 'confirmed' });
+  const merchantFeeTransaction = await createTransfer(connection, sender, {
+    recipient: new PublicKey(merchant as string),
+    amount: merchantFee,
+  }, { commitment: 'confirmed' });
 
-    transaction.add(stFeeTransaction);
-  }
+  transaction.add(stFeeTransaction);
+  transaction.add(partnerFeeTransaction);
+  transaction.add(merchantFeeTransaction);
 
   // Serialize and return the unsigned transaction.
   const serializedTransaction = transaction.serialize({

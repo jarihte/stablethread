@@ -48,11 +48,14 @@ export default async function Component() {
   // the SPL token to transfer - in this case USDC - optional parameter
   const splToken = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
 
-  // the partner address to collect 30% of the StableThread fee - optional parameter
+  // the partner address to collect 20% of the StableThread fee (must be not to or merchant) - required parameter
   const partner = '6otdmKAVQXrYFWjM1mueg61bFnTHARimH7jfGX4WxpgV';
+
+  // the merchant address to collect 10% of the StableThread fee (must be not to or partner) - required parameter
+  const merchant = 'BS2AHiggYfEgLswZBRzQhCG6xkaYphdFxqGN2xL5hCMd';
   
   // create the query string
-  const qString = qs.stringify({ amount, to, reference, splToken, partner });
+  const qString = qs.stringify({ amount, to, reference, splToken, partner, merchant });
 
   // create the QR code
   const qrLink = createQR(encodeURL({

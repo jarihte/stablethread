@@ -15,9 +15,9 @@ const contentData = [
       'Helius is the provider used to process transactions quickly and reliably.',
   },
   {
-    title: 'Partner Fee Splitting',
+    title: 'Fee Structure',
     description:
-      'A fee of 75¢ USD in SOL is charged per transaction and 70% goes to StableThread while 30% goes to the partner.',
+      'A fee of 75¢ USD in SOL is charged per transaction to the shopper while 70/20/10% of the fee is split to StableThread/Partner/Merchant.',
   },
 ];
 

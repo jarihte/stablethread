@@ -29,9 +29,8 @@ export default async function Component() {
 
   // create the socket connection
   useEffect(() => {
-    let socket: Socket | null = null;
     fetch('https://stablethread.com/api/socket').finally(() => {
-      socket = io('https://stablethread.com', { path: '/api/socket' });
+      const socket = io('https://stablethread.com', { path: '/api/socket' });
       setMsgSocket(socket);
     });
   });

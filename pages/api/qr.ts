@@ -90,14 +90,14 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
   if (splToken) {
     transaction = await createTransfer(connection, sender, {
       recipient,
-      amount: new BigNumber(amount as string),
+      amount: new BigNumber(amount as string).decimalPlaces(9, BigNumber.ROUND_UP),
       reference: new PublicKey(reference as string),
       splToken: new PublicKey(splToken as string),
     }, { commitment: 'confirmed' });
   } else {
     transaction = await createTransfer(connection, sender, {
       recipient,
-      amount: new BigNumber(amount as string),
+      amount: new BigNumber(amount as string).decimalPlaces(9, BigNumber.ROUND_UP),
       reference: new PublicKey(reference as string),
     }, { commitment: 'confirmed' });
   }
@@ -118,9 +118,9 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
   const fee = totalFee.dividedBy(price?.toString() as string).decimalPlaces(9, BigNumber.ROUND_UP);
 
   // Create transactions to transfer the fee to the bank, partner, and merchant.
-  const partnerFee = fee.multipliedBy('0.2');
-  const merchantFee = fee.multipliedBy('0.1');
-  const stFee = fee.minus(partnerFee).minus(merchantFee);
+  const partnerFee = fee.multipliedBy('0.2').decimalPlaces(9, BigNumber.ROUND_UP);
+  const merchantFee = fee.multipliedBy('0.1').decimalPlaces(9, BigNumber.ROUND_UP);
+  const stFee = fee.minus(partnerFee).minus(merchantFee).decimalPlaces(9, BigNumber.ROUND_UP);
 
   const stFeeTransaction = await createTransfer(connection, sender, {
     recipient: new PublicKey(process.env.BANK_ADDRESS as string),

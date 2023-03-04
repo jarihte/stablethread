@@ -10,6 +10,7 @@ import { NextApiRequest, NextApiResponse } from 'next/types';
 import NextCors from 'nextjs-cors';
 
 async function get(req: NextApiRequest, res: NextApiResponse) {
+  // Enable CORS
   await NextCors(req, res, {
     // Options
     methods: ['GET'],
@@ -23,6 +24,7 @@ async function get(req: NextApiRequest, res: NextApiResponse) {
 }
 
 async function post(req: NextApiRequest, res: NextApiResponse) {
+  // Enable CORS
   await NextCors(req, res, {
     // Options
     methods: ['POST'],

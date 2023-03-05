@@ -15,7 +15,7 @@ const contentData = [
       'Receive real-time websocket notifications when transactions instantly complete.',
   },
   {
-    title: 'Fee Structure',
+    title: 'Fee Sharing',
     description:
       'A fee of 75¢ USD in SOL is charged per transaction to the payee while 70/20/10% of the fee is split to StableThread/Partner/Merchant.',
   },

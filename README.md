@@ -2,7 +2,7 @@
 
 ## StableThread
 
-StableThead is a Solana PayFac.
+StableThead is a Solana Pay for SaaS.
 
 ### Providers
 * [Solana Pay](https://solanapay.com)

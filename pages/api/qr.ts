@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-/* eslint-disable max-len */
 import { getPythProgramKeyForCluster, PythHttpClient } from '@pythnetwork/client';
 import { createTransfer } from '@solana/pay';
 import { Connection, PublicKey } from '@solana/web3.js';
@@ -114,8 +113,12 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
 
     // Get the price of SOL/USD from Pyth.
     const solanaClusterName = 'mainnet-beta';
-    const pythClient = new PythHttpClient(connection, getPythProgramKeyForCluster(solanaClusterName));
-    const data = await pythClient.getAssetPricesFromAccounts([new PublicKey('H6ARHf6YXhGYeQfUzQNGk6rDNnLBQKrenN712K4AQJEG')]);
+    const pythClient = new PythHttpClient(
+      connection,
+      getPythProgramKeyForCluster(solanaClusterName),
+    );
+    const solUSD = new PublicKey('H6ARHf6YXhGYeQfUzQNGk6rDNnLBQKrenN712K4AQJEG');
+    const data = await pythClient.getAssetPricesFromAccounts([solUSD]);
     if (data[0].confidence! > 2000000) {
       logger.error('Price is not confident enough', data[0].confidence);
       throw new Error('Price is not confident enough');
@@ -123,7 +126,9 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
 
     // Calculate the fee in SOL.
     const { price } = data[0];
-    const fee = totalFee.dividedBy(price?.toString() as string).decimalPlaces(9, BigNumber.ROUND_UP);
+    const fee = totalFee
+      .dividedBy(price?.toString() as string)
+      .decimalPlaces(9, BigNumber.ROUND_UP);
 
     // Create transactions to transfer the fee to the bank, partner, and merchant.
     const partnerFee = fee.multipliedBy('0.2').decimalPlaces(9, BigNumber.ROUND_UP);
@@ -161,7 +166,10 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
     // Append the address to the webhook.
     try {
       const helius = new Helius(process.env.HELIUS_API_KEY as string);
-      await helius.appendAddressesToWebhook(process.env.HELIUS_WEBHOOK_ID as string, [merchant as string]);
+      await helius.appendAddressesToWebhook(
+        process.env.HELIUS_WEBHOOK_ID as string,
+        [merchant as string],
+      );
     } catch (e) {
       logger.error('failed to append address to webhook', e);
       throw new Error('failed to append address to webhook');

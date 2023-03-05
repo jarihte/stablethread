@@ -9,7 +9,7 @@ import { NextPageWithLayout } from './_app';
 import Layout from '../components/Layout';
 
 const markdown = `
-### React TypeScript Example for One-Time Payment
+### React TypeScript Example
 ~~~ts
 import { createQR, encodeURL } from '@solana/pay';
 import { Keypair } from '@solana/web3.js';

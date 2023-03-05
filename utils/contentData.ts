@@ -2,7 +2,7 @@ const contentData = [
   {
     title: 'Payments',
     description:
-      'StableThread enables you to accept payments in SOL and any SPL token. Accept one-time payments or subscriptions (coming soon).',
+      'StableThread enables you to accept payments in SOL and any SPL token.',
   },
   {
     title: 'Quick QR Code Generation',
@@ -10,19 +10,9 @@ const contentData = [
       'StableThread enables you to write one front-end API call to use Solana Pay.',
   },
   {
-    title: 'Real-time Notifications',
+    title: 'Instant Notifications and Transactions',
     description:
-      'Receive websocket notifications when transactions complete.',
-  },
-  {
-    title: 'Instant Transactions',
-    description:
-      'Helius is the provider used to process transactions quickly and reliably.',
-  },
-  {
-    title: 'Reporting',
-    description:
-      'StableThread provides a dashboard to view all your transactions (coming soon).',
+      'Receive real-time websocket notifications when transactions instantly complete.',
   },
   {
     title: 'Fee Structure',

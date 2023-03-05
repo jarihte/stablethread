@@ -10,9 +10,9 @@ const contentData = [
       'Write one front-end API call to use Solana Pay.',
   },
   {
-    title: 'Instant Notifications and Transactions',
+    title: 'Instant Settlement with Notification',
     description:
-      'Receive real-time websocket notifications when transactions instantly complete.',
+      'Instantly settle with a real-time websocket notification.',
   },
   {
     title: 'Fee Sharing',

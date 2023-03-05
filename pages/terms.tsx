@@ -5,15 +5,18 @@ import terms from '../markdown/terms';
 import { NextPageWithLayout } from './_app';
 
 const component : NextPageWithLayout = () => (
-  <div className="mb-5" data-testid="external">
-    <div data-testid="external-text">
-      <p className="lead">
-        <ReactMarkdown>
-          {terms}
-        </ReactMarkdown>
-      </p>
+  <>
+    <meta name="robots" content="noindex, follow" />
+    <div className="mb-5" data-testid="external">
+      <div data-testid="external-text">
+        <p className="lead">
+          <ReactMarkdown>
+            {terms}
+          </ReactMarkdown>
+        </p>
+      </div>
     </div>
-  </div>
+  </>
 );
 
 component.getLayout = (page) => (

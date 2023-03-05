@@ -1,8 +1,8 @@
 const contentData = [
   {
-    title: 'Payments',
+    title: 'One-Time Payments',
     description:
-      'StableThread enables you to accept payments in SOL and any SPL token.',
+      'StableThread enables you to accept payments in SOL or any SPL token.',
   },
   {
     title: 'Quick QR Code Generation',

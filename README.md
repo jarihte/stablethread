@@ -2,7 +2,7 @@
 
 ## StableThread
 
-Solana Pay for SaaS
+Solana Pay made simple
 
 ### Providers
 * [Solana Pay](https://solanapay.com)

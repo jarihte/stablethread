@@ -175,7 +175,7 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
     res.status(200).send({ transaction: base64Transaction });
   } catch (e) {
     logger.error('failed to create transaction', e);
-    res.status(200).send({ message: e });
+    res.status(400).send({ message: e });
   }
 }
 

@@ -46,8 +46,10 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
 
     // Account provided in the transaction request body by the wallet.
     const accountField = req.body?.account;
-    logger.error('missing accountField', req.body);
-    if (!accountField) throw new Error('missing account');
+    if (!accountField) {
+      logger.error('missing accountField', req.body);
+      throw new Error('missing account');
+    }
 
     // Create a PublicKey from the account field.
     const sender = new PublicKey(accountField);

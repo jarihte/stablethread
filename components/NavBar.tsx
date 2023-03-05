@@ -40,7 +40,7 @@ function NavBar() {
               </NavItem>
               <NavItem style={{ paddingTop: '18px' }}>
                 <PageLink href="https://www.canva.com/design/DAFb850S5Ho/xr63Lzlgi-rrxIgGx5Q5Ew/view?utm_content=DAFb850S5Ho&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton" className="nav-link" testId="navbar-home" icon={null} tabIndex={undefined}>
-                  PitchDeck
+                  Pitch Deck
                 </PageLink>
               </NavItem>
             </Nav>

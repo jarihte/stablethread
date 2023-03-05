@@ -24,8 +24,8 @@ function NavBar() {
           <Collapse isOpen={isOpen} navbar>
             <Nav className="mr-auto" navbar data-testid="navbar-items">
               <NavItem style={{ paddingTop: '5px' }}>
-                <PageLink href="https://stablethread.com" className="nav-link" testId="navbar-home" icon={null} tabIndex={undefined}>
-                  <img src="/images/stablethread-icon.png" alt="logo" height="50px" />
+                <PageLink href="/" className="nav-link" testId="navbar-home" icon={null} tabIndex={undefined}>
+                  <img src="/images/archpaid-icon.png" alt="logo" height="50px" />
                 </PageLink>
               </NavItem>
               <NavItem style={{ paddingTop: '18px' }}>
@@ -34,7 +34,7 @@ function NavBar() {
                 </PageLink>
               </NavItem>
               <NavItem style={{ paddingTop: '18px' }}>
-                <PageLink href="https://github.com/bevanhunt/stablethread" className="nav-link" testId="navbar-home" icon={null} tabIndex={undefined}>
+                <PageLink href="https://github.com/bevanhunt/archpaid" className="nav-link" testId="navbar-home" icon={null} tabIndex={undefined}>
                   GitHub
                 </PageLink>
               </NavItem>

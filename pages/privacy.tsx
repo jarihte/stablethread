@@ -5,15 +5,18 @@ import privacy from '../markdown/privacy';
 import { NextPageWithLayout } from './_app';
 
 const component : NextPageWithLayout = () => (
-  <div className="mb-5" data-testid="external">
-    <div data-testid="external-text">
-      <p className="lead">
-        <ReactMarkdown>
-          {privacy}
-        </ReactMarkdown>
-      </p>
+  <>
+    <meta name="robots" content="noindex, follow" />
+    <div className="mb-5" data-testid="external">
+      <div data-testid="external-text">
+        <p className="lead">
+          <ReactMarkdown>
+            {privacy}
+          </ReactMarkdown>
+        </p>
+      </div>
     </div>
-  </div>
+  </>
 );
 
 component.getLayout = (page) => (

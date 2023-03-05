@@ -2,7 +2,7 @@ const contentData = [
   {
     title: 'One-Time Payments',
     description:
-      'StableThread enables you to accept payments in SOL or any SPL token.',
+      'ArchPaid enables you to accept payments in SOL or any SPL token.',
   },
   {
     title: 'Quick QR Code Generation',
@@ -17,7 +17,7 @@ const contentData = [
   {
     title: 'Fee Sharing',
     description:
-      'A fee of 75¢ USD in SOL is charged per transaction to the payee while 70/20/10% of the fee is split to StableThread/Partner/Merchant.',
+      'A fee of 75¢ USD in SOL is charged per transaction to the payee while 70/20/10% of the fee is split to ArchPaid/Partner/Merchant.',
   },
 ];
 

@@ -18,8 +18,8 @@ async function get(req: NextApiRequest, res: NextApiResponse) {
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   });
   res.status(200).json({
-    label: 'StableThread',
-    icon: 'https://stablethread.com/images/stablethread-icon.png',
+    label: 'ArchPaid',
+    icon: 'https://archapid.com/images/archpaid-icon.png',
   });
 }
 

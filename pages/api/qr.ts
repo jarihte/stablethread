@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable max-len */
 import { getPythProgramKeyForCluster, PythHttpClient } from '@pythnetwork/client';
@@ -8,6 +7,8 @@ import BigNumber from 'bignumber.js';
 import { Helius } from 'helius-sdk';
 import { NextApiRequest, NextApiResponse } from 'next/types';
 import NextCors from 'nextjs-cors';
+import pino from 'pino';
+import pretty from 'pino-pretty';
 
 async function get(req: NextApiRequest, res: NextApiResponse) {
   // Enable CORS
@@ -32,6 +33,12 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   });
 
+  // setup logging
+  const stream = pretty({
+    colorize: true,
+  });
+  const logger = pino(stream);
+
   // Account provided in the transaction request body by the wallet.
   const accountField = req.body?.account;
   if (!accountField) throw new Error('missing account');
@@ -53,25 +60,25 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
 
   // Check that all required values are present.
   if (!amount) {
-    console.error('missing amount');
+    logger.error('missing amount', req.query);
     throw new Error('missing amount');
   }
   if (!merchant) {
-    console.error('missing merchant');
+    logger.error('missing merchant', req.query);
     throw new Error('missing merchant');
   }
   if (!reference) {
-    console.error('missing reference');
+    logger.error('missing reference', req.query);
     throw new Error('missing reference');
   }
   if (!partner) {
-    console.error('missing partner');
+    logger.error('missing partner', req.query);
     throw new Error('missing partner');
   }
 
   // Check that all values are valid.
   if (new PublicKey(partner as string).equals(new PublicKey(merchant as string))) {
-    console.error('partner address cannot be the same as the merchant address');
+    logger.error('partner address cannot be the same as the merchant address', req.query);
     throw new Error('partner address cannot be the same as the merchant address');
   }
 

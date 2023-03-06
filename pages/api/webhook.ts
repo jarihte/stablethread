@@ -3,6 +3,8 @@ import { NextApiRequest, NextApiResponse } from 'next/types';
 import type { Socket as NetSocket } from 'net';
 import type { Server as IOServer } from 'socket.io';
 import type { Server as HTTPServer } from 'http';
+import pino from 'pino';
+import pretty from 'pino-pretty';
 
 type TxData = {
   accounts: string[];

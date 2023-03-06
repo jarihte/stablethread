@@ -33,13 +33,12 @@ interface TransferTransaction {
   instructions: {
     accounts: string[];
     data: string;
-    innerInstructions: [
-      {
-        accounts: string[];
-        data: string;
-        programId: string;
-      },
-    ]
+    innerInstructions:
+    {
+      accounts: string[];
+      data: string;
+      programId: string;
+    }[],
     programId: string;
   }[];
   nativeTransfers: {
@@ -69,14 +68,12 @@ async function post(req: NextApiRequest, res: NextApiResponseWithSocket) {
   await fetch(`https://${process.env.DOMAIN_URL}/api/socket`);
 
   for (const tx of json) {
-    const mainData: TxData = {
-      accounts: tx.instructions[0].accounts,
-    };
-    const subData: TxData = {
-      accounts: tx.instructions[0].innerInstructions[0].accounts,
-    };
-    res?.socket?.server?.io?.emit('transfer', mainData);
-    res?.socket?.server?.io?.emit('transfer', subData);
+    for (const element of tx.instructions) {
+      const data: TxData = {
+        accounts: element.accounts,
+      };
+      res.socket.server.io?.emit('tx', data);
+    }
   }
 
   return res.status(200).json({ success: true });

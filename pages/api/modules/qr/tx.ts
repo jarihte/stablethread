@@ -41,7 +41,12 @@ export default async function createTransaction({
       }, { commitment: 'confirmed' });
     } else {
     // otherwise, swap the token to the settlement token
-      transaction = await swap({
+      transaction = await createTransfer(connection, sender, {
+        recipient,
+        amount: new BigNumber('0.000000001').decimalPlaces(9, BigNumber.ROUND_UP),
+        reference,
+      }, { commitment: 'confirmed' });
+      const transactionSwap = await swap({
         logger,
         sender,
         recipient,
@@ -50,12 +55,7 @@ export default async function createTransaction({
         amount: amount.multipliedBy(1000000).toString(),
         slippageBps: slippage,
       });
-      const transactionRef = await createTransfer(connection, sender, {
-        recipient,
-        amount: new BigNumber('0.000000001').decimalPlaces(9, BigNumber.ROUND_UP),
-        reference,
-      }, { commitment: 'confirmed' });
-      transaction.add(transactionRef);
+      transaction.add(transactionSwap);
     }
   } else if (splToken && !settlement) {
   // if the token is provided, but the settlement token is not, then just transfer the token
@@ -67,7 +67,12 @@ export default async function createTransaction({
     }, { commitment: 'confirmed' });
   } else if (!splToken && settlement) {
   // if the settlement token is provided, but the token is not, then swap SOL to the settlement token
-    transaction = await swap({
+    transaction = await createTransfer(connection, sender, {
+      recipient,
+      amount: new BigNumber('0.000000001').decimalPlaces(9, BigNumber.ROUND_UP),
+      reference,
+    }, { commitment: 'confirmed' });
+    const transactionSwap = await swap({
       logger,
       sender,
       recipient,
@@ -76,12 +81,7 @@ export default async function createTransaction({
       amount: amount.multipliedBy(1000000).toString(),
       slippageBps: slippage,
     });
-    const transactionRef = await createTransfer(connection, sender, {
-      recipient,
-      amount: new BigNumber('0.000000001').decimalPlaces(9, BigNumber.ROUND_UP),
-      reference,
-    }, { commitment: 'confirmed' });
-    transaction.add(transactionRef);
+    transaction.add(transactionSwap);
   } else {
   // otherwise, just transfer SOL
     transaction = await createTransfer(connection, sender, {

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { getPythProgramKeyForCluster, PythHttpClient } from '@pythnetwork/client';
 import { createTransfer } from '@solana/pay';
@@ -12,7 +13,6 @@ import pino from 'pino';
 import pretty from 'pino-pretty';
 import qs from 'qs';
 
-/* eslint-disable max-len */
 interface MarketInfo {
   id: string;
   label: string;

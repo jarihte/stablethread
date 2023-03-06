@@ -69,9 +69,10 @@ interface SwapTransaction {
 async function swap(sender: string, receiver: string, inputMint: string, outputMint: string, amount: string, slippageBps: number) {
   // create query string
   const asLegacyTransaction = true;
+  const onlyDirectRoutes = true;
   const swapMode = 'ExactOut';
   const qString = qs.stringify({
-    inputMint, outputMint, amount, slippageBps, asLegacyTransaction, swapMode,
+    inputMint, outputMint, amount, slippageBps, asLegacyTransaction, swapMode, onlyDirectRoutes,
   });
 
   // get quote
@@ -109,7 +110,7 @@ async function get(req: NextApiRequest, res: NextApiResponse) {
   });
   res.status(200).json({
     label: 'ArchPaid',
-    icon: 'https://archapid.com/images/archpaid-icon.png',
+    icon: 'https://archpaid.com/images/archpaid-icon.png',
   });
 }
 

@@ -50,6 +50,12 @@ export default async function createTransaction({
         amount: amount.multipliedBy(1000000).toString(),
         slippageBps: slippage,
       });
+      const transactionRef = await createTransfer(connection, sender, {
+        recipient,
+        amount: new BigNumber('0.000000001').decimalPlaces(9, BigNumber.ROUND_UP),
+        reference,
+      }, { commitment: 'confirmed' });
+      transaction.add(transactionRef);
     }
   } else if (splToken && !settlement) {
   // if the token is provided, but the settlement token is not, then just transfer the token
@@ -70,6 +76,12 @@ export default async function createTransaction({
       amount: amount.multipliedBy(1000000).toString(),
       slippageBps: slippage,
     });
+    const transactionRef = await createTransfer(connection, sender, {
+      recipient,
+      amount: new BigNumber('0.000000001').decimalPlaces(9, BigNumber.ROUND_UP),
+      reference,
+    }, { commitment: 'confirmed' });
+    transaction.add(transactionRef);
   } else {
   // otherwise, just transfer SOL
     transaction = await createTransfer(connection, sender, {

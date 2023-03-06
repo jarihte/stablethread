@@ -113,7 +113,6 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
       recipient: merchant,
       partner,
       transaction,
-      reference,
     });
 
     // Serialize and return the unsigned transaction.

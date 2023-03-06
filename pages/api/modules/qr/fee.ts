@@ -12,7 +12,6 @@ type FeeParams = {
   recipient: PublicKey,
   partner: PublicKey,
   transaction: Transaction,
-  reference: PublicKey,
 };
 
 export default async function createFee({
@@ -22,7 +21,6 @@ export default async function createFee({
   recipient,
   partner,
   transaction,
-  reference,
 }: FeeParams) : Promise<Transaction> {
 // Charge a fee in USD for the transaction.
   const totalFee = new BigNumber('0.75');
@@ -54,19 +52,16 @@ export default async function createFee({
   const stFeeTransaction = await createTransfer(connection, sender, {
     recipient: new PublicKey(process.env.BANK_ADDRESS as string),
     amount: stFee,
-    reference,
   }, { commitment: 'confirmed' });
 
   const partnerFeeTransaction = await createTransfer(connection, sender, {
     recipient: partner,
     amount: partnerFee,
-    reference,
   }, { commitment: 'confirmed' });
 
   const merchantFeeTransaction = await createTransfer(connection, sender, {
     recipient,
     amount: merchantFee,
-    reference,
   }, { commitment: 'confirmed' });
 
   transaction.add(stFeeTransaction);

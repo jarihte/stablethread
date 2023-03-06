@@ -8,6 +8,8 @@ Solana Pay made simple
 * [Solana Pay](https://solanapay.com)
 * [Helius RPC and Webhook](https://helius.xyz)
 * [Pyth Network](https://pyth.network)
+* [Jupiter Aggregator](https://jup.ag)
+
 ### Grizzlython
 * Created for the [Solana Grizzython Hackathon](https://solana.com/grizzlython)
 * Inspired by [Jon Wong](https://build.superteam.fun/article/build-a-webhook-service-for-solana-pay)

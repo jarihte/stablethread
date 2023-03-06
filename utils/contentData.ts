@@ -2,7 +2,7 @@ const contentData = [
   {
     title: 'One-Time Payments',
     description:
-      'ArchPaid enables you to accept payments in SOL or any SPL token in one API call.',
+      'ArchPaid enables you to accept payments in SOL or any SPL token with one API call.',
   },
   {
     title: 'Instant Settlement with Notification',
@@ -12,7 +12,7 @@ const contentData = [
   {
     title: 'Settlement Swaps',
     description:
-      'Pay and receive in different tokens using Jupiter swaps.',
+      'Pay and receive in different tokens using auto swapping.',
   },
   {
     title: 'Fee Sharing',

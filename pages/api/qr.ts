@@ -68,20 +68,29 @@ interface SwapTransaction {
 
 async function swap(sender: string, receiver: string, inputMint: string, outputMint: string, amount: string, slippageBps: number) {
   // create query string
+  const asLegacyTransaction = true;
   const qString = qs.stringify({
-    inputMint, outputMint, amount, slippageBps,
+    inputMint, outputMint, amount, slippageBps, asLegacyTransaction,
   });
 
   // get quote
   const quoteRes = await fetch(`https://quote-api.jup.ag/v4/quote?${qString}`);
+
+  console.log('1');
 
   // check if quote was successful
   if (!quoteRes.ok) {
     throw new Error('quote failed');
   }
 
+  console.log('2');
+
   // get quote data
   const quoteData : APIResponse = await quoteRes.json();
+
+  console.log(quoteData);
+
+  console.log('3');
 
   // get serialized transactions for the swap
   const swapResponse = await fetch('https://quote-api.jup.ag/v4/swap', {
@@ -97,13 +106,21 @@ async function swap(sender: string, receiver: string, inputMint: string, outputM
     }),
   });
 
+  console.log('4');
+
   // check if swap was successful
   if (!swapResponse.ok) {
     throw new Error('swap failed');
   }
 
+  console.log('5');
+
   // get serialized transactions for the swap
   const transactions : SwapTransaction = await swapResponse.json();
+
+  console.log(transactions);
+
+  console.log('6');
 
   // deserialize and return the transaction
   const { swapTransaction } = transactions;

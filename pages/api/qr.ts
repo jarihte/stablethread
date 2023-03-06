@@ -102,6 +102,7 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
       recipient: merchant,
       amount,
       slippage: 50,
+      reference,
     });
 
     // Add fee
@@ -112,7 +113,6 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
       recipient: merchant,
       partner,
       transaction,
-      reference,
     });
 
     // Serialize and return the unsigned transaction.

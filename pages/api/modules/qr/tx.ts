@@ -14,6 +14,7 @@ type TxParams = {
   recipient: PublicKey,
   amount: BigNumber,
   slippage: number,
+  reference: PublicKey,
 };
 
 export default async function createTransaction({
@@ -25,6 +26,7 @@ export default async function createTransaction({
   recipient,
   amount,
   slippage,
+  reference,
 }: TxParams) : Promise<Transaction> {
 // Create a transaction to transfer the amount to the receiver.
   let transaction;
@@ -35,6 +37,7 @@ export default async function createTransaction({
         recipient,
         amount,
         splToken,
+        reference,
       }, { commitment: 'confirmed' });
     } else {
     // otherwise, swap the token to the settlement token
@@ -54,6 +57,7 @@ export default async function createTransaction({
       recipient,
       amount,
       splToken,
+      reference,
     }, { commitment: 'confirmed' });
   } else if (!splToken && settlement) {
   // if the settlement token is provided, but the token is not, then swap SOL to the settlement token
@@ -70,6 +74,7 @@ export default async function createTransaction({
   // otherwise, just transfer SOL
     transaction = await createTransfer(connection, sender, {
       recipient,
+      reference,
       amount: new BigNumber(amount).decimalPlaces(9, BigNumber.ROUND_UP),
     }, { commitment: 'confirmed' });
   }

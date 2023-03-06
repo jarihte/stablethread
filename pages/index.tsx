@@ -47,11 +47,14 @@ export default async function Component() {
   // the SPL token to transfer - in this case USDC - optional parameter
   const splToken = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
 
+  // the SPL token to settle the transaction - in this case SOL - optional parameter - uses Jupiter with 50bps slippage
+  const settlement = 'So11111111111111111111111111111111111111112';
+
   // the partner address to collect 20% of the ArchPaid fee - must not be merchant address - required parameter
   const partner = '6otdmKAVQXrYFWjM1mueg61bFnTHARimH7jfGX4WxpgV';
   
   // create the query string
-  const qString = qs.stringify({ amount, merchant, reference, splToken, partner });
+  const qString = qs.stringify({ amount, merchant, reference, splToken, settlement, partner });
 
   // create the QR code
   const qrLink = createQR(encodeURL({

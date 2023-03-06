@@ -2,17 +2,17 @@ const contentData = [
   {
     title: 'One-Time Payments',
     description:
-      'ArchPaid enables you to accept payments in SOL or any SPL token.',
-  },
-  {
-    title: 'Quick QR Code Generation',
-    description:
-      'Write one front-end API call to use Solana Pay.',
+      'ArchPaid enables you to accept payments in SOL or any SPL token in one API call.',
   },
   {
     title: 'Instant Settlement with Notification',
     description:
       'Instantly settle with a real-time websocket notification.',
+  },
+  {
+    title: 'Settlement Swaps',
+    description:
+      'Pay and receive in different tokens using Jupiter swaps.',
   },
   {
     title: 'Fee Sharing',

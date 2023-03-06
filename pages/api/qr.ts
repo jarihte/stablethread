@@ -1,13 +1,115 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { getPythProgramKeyForCluster, PythHttpClient } from '@pythnetwork/client';
 import { createTransfer } from '@solana/pay';
-import { Connection, PublicKey } from '@solana/web3.js';
+import {
+  Connection, PublicKey, Transaction,
+} from '@solana/web3.js';
 import BigNumber from 'bignumber.js';
 import { Helius } from 'helius-sdk';
 import { NextApiRequest, NextApiResponse } from 'next/types';
 import NextCors from 'nextjs-cors';
 import pino from 'pino';
 import pretty from 'pino-pretty';
+import qs from 'qs';
+
+/* eslint-disable max-len */
+interface MarketInfo {
+  id: string;
+  label: string;
+  inputMint: string;
+  outputMint: string;
+  notEnoughLiquidity: boolean;
+  inAmount: string;
+  outAmount: string;
+  minInAmount: string;
+  minOutAmount: string;
+  priceImpactPct: number;
+  lpFee: {
+    amount: string;
+    mint: string;
+    pct: number;
+  };
+  platformFee: {
+    amount: string;
+    mint: string;
+    pct: number;
+  };
+}
+
+interface Fees {
+  signatureFee: number;
+  openOrdersDeposits: number[];
+  ataDeposits: number[];
+  totalFeeAndDeposits: number;
+  minimumSOLForTransaction: number;
+}
+
+interface MarketData {
+  inAmount: string;
+  outAmount: string;
+  priceImpactPct: number;
+  marketInfos: MarketInfo[];
+  amount: string;
+  slippageBps: number;
+  otherAmountThreshold: string;
+  swapMode: string;
+  fees: Fees;
+}
+
+interface APIResponse {
+  data: MarketData[];
+  timeTaken: number;
+  contextSlot: number;
+}
+
+interface SwapTransaction {
+  swapTransaction: string;
+}
+
+async function swap(sender: string, receiver: string, inputMint: string, outputMint: string, amount: string, slippageBps: number) {
+  // create query string
+  const qString = qs.stringify({
+    inputMint, outputMint, amount, slippageBps,
+  });
+
+  // get quote
+  const quoteRes = await fetch(`https://quote-api.jup.ag/v4/quote?${qString}`);
+
+  // check if quote was successful
+  if (!quoteRes.ok) {
+    throw new Error('quote failed');
+  }
+
+  // get quote data
+  const quoteData : APIResponse = await quoteRes.json();
+
+  // get serialized transactions for the swap
+  const swapResponse = await fetch('https://quote-api.jup.ag/v4/swap', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      route: quoteData.data[0],
+      asLegacyTransaction: true,
+      userPublicKey: sender,
+      destinationWallet: receiver,
+    }),
+  });
+
+  // check if swap was successful
+  if (!swapResponse.ok) {
+    throw new Error('swap failed');
+  }
+
+  // get serialized transactions for the swap
+  const transactions : SwapTransaction = await swapResponse.json();
+
+  // deserialize and return the transaction
+  const { swapTransaction } = transactions;
+  const swapTransactionBuf = Buffer.from(swapTransaction, 'base64');
+  return Transaction.from(swapTransactionBuf);
+}
 
 async function get(req: NextApiRequest, res: NextApiResponse) {
   // Enable CORS
@@ -58,6 +160,7 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
       reference,
       splToken,
       partner,
+      settlement,
     } = req.query;
 
     // Check that all required values are present.
@@ -89,14 +192,32 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
 
     // Create a transaction to transfer the amount to the receiver.
     let transaction;
-    if (splToken) {
+    if (splToken && settlement) {
+      // if the token is the same as the settlement token, then just transfer the token
+      if (splToken === settlement) {
+        transaction = await createTransfer(connection, sender, {
+          recipient,
+          amount: new BigNumber(amount as string).decimalPlaces(9, BigNumber.ROUND_UP),
+          reference: new PublicKey(reference as string),
+          splToken: new PublicKey(splToken as string),
+        }, { commitment: 'confirmed' });
+      } else {
+        // otherwise, swap the token to the settlement token
+        transaction = await swap(sender.toBase58(), recipient.toBase58(), splToken as string, settlement as string, amount as string, 50);
+      }
+    } else if (splToken && !settlement) {
+      // if the token is provided, but the settlement token is not, then just transfer the token
       transaction = await createTransfer(connection, sender, {
         recipient,
         amount: new BigNumber(amount as string).decimalPlaces(9, BigNumber.ROUND_UP),
         reference: new PublicKey(reference as string),
         splToken: new PublicKey(splToken as string),
       }, { commitment: 'confirmed' });
+    } else if (!splToken && settlement) {
+      // if the settlement token is provided, but the token is not, then swap SOL to the settlement token
+      transaction = await swap(sender.toBase58(), recipient.toBase58(), 'So11111111111111111111111111111111111111112', settlement as string, amount as string, 50);
     } else {
+      // otherwise, just transfer SOL
       transaction = await createTransfer(connection, sender, {
         recipient,
         amount: new BigNumber(amount as string).decimalPlaces(9, BigNumber.ROUND_UP),

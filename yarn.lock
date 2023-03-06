@@ -3637,6 +3637,11 @@ pretty-format@^29.0.0, pretty-format@^29.4.3:
     ansi-styles "^5.0.0"
     react-is "^18.0.0"
 
+pretty-print-json@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/pretty-print-json/-/pretty-print-json-1.4.0.tgz#911e95fd30f2f6fc723bb890276f9a5d484b098b"
+  integrity sha512-PKrcZ/9ErDN5WfRdWhZtbs5izhSTZoQNLsNPdZtpbt0Ex6eu/e6Akf44gGEdCYEMUnIKg+TeYEeF9wunri1/vw==
+
 prismjs@^1.27.0:
   version "1.29.0"
   resolved "https://registry.yarnpkg.com/prismjs/-/prismjs-1.29.0.tgz#f113555a8fa9b57c35e637bba27509dcf802dd12"

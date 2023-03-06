@@ -56,23 +56,42 @@ interface TransferTransaction {
 }
 
 async function post(req: NextApiRequest, res: NextApiResponseWithSocket) {
+  // setup logging
+  const stream = pretty({
+    colorize: true,
+  });
+  const logger = pino(stream);
+
+  // get the authorization header
   const { headers } = req;
   const { authorization } = headers;
 
+  // check if the authorization header is valid
   if (authorization !== process.env.HELIUS_WEBHOOK_SECRET) {
     return res.status(401).json({ error: 'access denied' });
   }
 
+  // get the body of the request and log it
   const { body } = req;
   const json : TransferTransaction[] = body;
+  logger.info(json);
+
+  // get the socket
   await fetch(`https://${process.env.DOMAIN_URL}/api/socket`);
 
+  // loop through the transactions and emit them to the socket
   for (const tx of json) {
     for (const element of tx.instructions) {
       const data: TxData = {
         accounts: element.accounts,
       };
       res.socket.server.io?.emit('tx', data);
+      for (const elem of element.innerInstructions) {
+        const dataInner: TxData = {
+          accounts: elem.accounts,
+        };
+        res.socket.server.io?.emit('tx', dataInner);
+      }
     }
   }
 

@@ -71,7 +71,7 @@ async function post(req: NextApiRequest, res: NextApiResponseWithSocket) {
   // loop through the transactions and emit them to the socket
   // for both swaps and transfers the first instruction is the one we want
   for (const tx of json) {
-    res.socket.server.io?.emit('transfer', tx.instructions[0].accounts);
+    res.socket.server.io?.emit('transfer', { accounts: tx.instructions[0].accounts });
   }
 
   return res.status(200).json({ success: true });

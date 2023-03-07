@@ -10,7 +10,7 @@ import swap from './swap';
 type TxParams = {
   logger: pino.Logger,
   connection: Connection,
-  splToken: PublicKey | undefined,
+  payment: PublicKey | undefined,
   settlement: PublicKey | undefined,
   sender: PublicKey,
   recipient: PublicKey,
@@ -22,7 +22,7 @@ type TxParams = {
 export default async function createTransaction({
   logger,
   connection,
-  splToken,
+  payment,
   settlement,
   sender,
   recipient,
@@ -32,13 +32,13 @@ export default async function createTransaction({
 }: TxParams) : Promise<Transaction> {
 // Create a transaction to transfer the amount to the receiver.
   let transaction : Transaction;
-  if (splToken && settlement) {
+  if (payment && settlement) {
   // if the token is the same as the settlement token, then just transfer the token
-    if (splToken.equals(settlement)) {
+    if (payment.equals(settlement)) {
       transaction = await createTransfer(connection, sender, {
         recipient,
         amount,
-        splToken,
+        splToken: payment,
         reference,
       }, { commitment: 'confirmed' });
     } else {
@@ -47,7 +47,7 @@ export default async function createTransaction({
         logger,
         sender,
         recipient,
-        inputMint: splToken.toBase58(),
+        inputMint: payment.toBase58(),
         outputMint: settlement.toBase58(),
         amount: amount.multipliedBy(1000000).toString(),
         slippageBps: slippage,
@@ -59,15 +59,15 @@ export default async function createTransaction({
       };
       transaction.instructions[0].keys.push(accountMeta);
     }
-  } else if (splToken && !settlement) {
+  } else if (payment && !settlement) {
   // if the token is provided, but the settlement token is not, then just transfer the token
     transaction = await createTransfer(connection, sender, {
       recipient,
       amount,
-      splToken,
+      splToken: payment,
       reference,
     }, { commitment: 'confirmed' });
-  } else if (!splToken && settlement) {
+  } else if (!payment && settlement) {
   // if the settlement token is provided, but the token is not, then swap SOL to the settlement token
     transaction = await swap({
       logger,

@@ -45,15 +45,12 @@ export default async function Component() {
   const merchant = '2LRnpYKkfGQBBGAJbU5V6uKrYVH57uH5gx75ksbbNbLn';
   
   // the SPL token to transfer - in this case USDC - optional parameter
-  // USDC: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'
-  // USDT: 'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB'
-  const splToken = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
+  // 'USDC' or 'USDT' (must be uppercase)
+  const payment = 'USDC';
 
-  // the SPL token to settle the transaction - in this case USDT - optional parameter - uses Jupiter with 50bps slippage
-  // USDC: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'
-  // USDT: 'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB'
-  // SOL: 'So11111111111111111111111111111111111111112'
-  const settlement = 'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB';
+  // the token to settle the transaction - in this case USDT - optional parameter - uses Jupiter with 50bps slippage
+  // 'USDC' or 'USDT' or 'SOL' (must be uppercase)
+  const settlement = 'USDT';
 
   // the partner address to collect 20% of the ArchPaid fee - must not be merchant address - required parameter
   const partner = '6otdmKAVQXrYFWjM1mueg61bFnTHARimH7jfGX4WxpgV';

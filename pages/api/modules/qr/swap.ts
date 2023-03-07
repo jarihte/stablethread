@@ -87,7 +87,8 @@ export default async function swap({
 
   // check for errors
   if (!quoteRes.ok) {
-    logger.error('Error getting quote', quoteData);
+    logger.error('Error getting quote');
+    logger.error(quoteData);
     throw new Error('Error getting quote');
   }
 
@@ -108,7 +109,8 @@ export default async function swap({
 
   // check for errors
   if (!swapResponse.ok) {
-    logger.error('Error getting swap transaction', transactions);
+    logger.error('Error getting swap transaction');
+    logger.error(transactions);
     throw new Error('Error getting swap transaction');
   }
 

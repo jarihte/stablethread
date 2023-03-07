@@ -12,7 +12,7 @@ const contentData = [
   {
     title: 'Settlement Swaps',
     description:
-      'Pay and receive in different tokens using auto swapping.',
+      'Pay and receive in different tokens using auto swapping. Currently supports SOL, USDC, and USDT.',
   },
   {
     title: 'Fee Sharing',

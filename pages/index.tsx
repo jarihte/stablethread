@@ -29,8 +29,8 @@ export default async function Component() {
 
   // create the socket connection
   useEffect(() => {
-    fetch('https://archpaid.com/api/socket').finally(() => {
-      const socket = io('https://archpaid.com', { path: '/api/socket' });
+    fetch('https://stablethread.com/api/socket').finally(() => {
+      const socket = io('https://stablethread.com', { path: '/api/socket' });
       setMsgSocket(socket);
     });
   });
@@ -41,7 +41,7 @@ export default async function Component() {
   // the amount to transfer - required parameter
   const amount = '0.01';
   
-  // the merchant address to send the transfer - collects 10% of the ArchPaid fee - required parameter
+  // the merchant address to send the transfer - collects 10% of the fee - required parameter
   const merchant = '2LRnpYKkfGQBBGAJbU5V6uKrYVH57uH5gx75ksbbNbLn';
   
   // the token of the payment transaction - required parameter
@@ -51,7 +51,7 @@ export default async function Component() {
   // Supported Pairs (payment/settlement): SOL/USDC, SOL/USDT, USDC/USDT, SOL/SOL, USDC/USDC, USDT/USDT
   const settlement = 'USDT';
 
-  // the partner address to collect 20% of the ArchPaid fee - must not be merchant address - required parameter
+  // the partner address to collect 20% of the fee - must not be merchant address - required parameter
   const partner = '6otdmKAVQXrYFWjM1mueg61bFnTHARimH7jfGX4WxpgV';
   
   // create the query string
@@ -59,7 +59,7 @@ export default async function Component() {
 
   // create the QR code
   const qrLink = createQR(encodeURL({
-    link: new URL(\`https://archpaid.com/api/qr?\${qString}\`),
+    link: new URL(\`https://stablethread.com/api/qr?\${qString}\`),
   }));
 
   // get the raw data to create QR code image

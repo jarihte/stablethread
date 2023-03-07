@@ -15,8 +15,8 @@ type Token = {
 
 async function get(req: NextApiRequest, res: NextApiResponse) {
   res.status(200).json({
-    label: 'ArchPaid',
-    icon: 'https://archpaid.com/images/archpaid-icon.png',
+    label: 'StableThread',
+    icon: 'https://stablethread.com/images/stablethread-icon.png',
   });
 }
 

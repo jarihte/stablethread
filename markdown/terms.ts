@@ -16,7 +16,7 @@ Middletown, DE 19709
 
 Email: hello@circlesub.com
 
-COMPANY WEBSITE: The website located at [circlesub.com] and [archpaid.com] (together with any websites on related domains or
+COMPANY WEBSITE: The website located at [circlesub.com] and [stablethread.com] (together with any websites on related domains or
 subdomains, the “Site”).
 
 ### AGREEMENT

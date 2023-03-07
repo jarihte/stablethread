@@ -2,7 +2,7 @@ const contentData = [
   {
     title: 'One-Time Payments',
     description:
-      'ArchPaid enables you to accept payments in SOL, USDC, or USDT with one API call.',
+      'StableThread enables you to accept payments in SOL, USDC, or USDT with one API call.',
   },
   {
     title: 'Instant Settlement with Notification',
@@ -17,7 +17,7 @@ const contentData = [
   {
     title: 'Fee Sharing',
     description:
-      'A fee of 75¢ USD in SOL is charged per transaction to the payee while 70/20/10% of the fee is split to ArchPaid/Partner/Merchant.',
+      'A fee of 75¢ USD in SOL is charged per transaction to the payee while 70/20/10% of the fee is split to StableThread/Partner/Merchant.',
   },
 ];
 

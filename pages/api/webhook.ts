@@ -3,8 +3,6 @@ import { NextApiRequest, NextApiResponse } from 'next/types';
 import type { Socket as NetSocket } from 'net';
 import type { Server as IOServer } from 'socket.io';
 import type { Server as HTTPServer } from 'http';
-import pino from 'pino';
-import pretty from 'pino-pretty';
 
 type TxData = {
   accounts: string[];
@@ -58,12 +56,6 @@ interface TransferTransaction {
 }
 
 async function post(req: NextApiRequest, res: NextApiResponseWithSocket) {
-  // setup logging
-  const stream = pretty({
-    colorize: true,
-  });
-  const logger = pino(stream);
-
   // get the authorization header
   const { headers } = req;
   const { authorization } = headers;
@@ -76,25 +68,14 @@ async function post(req: NextApiRequest, res: NextApiResponseWithSocket) {
   // get the body of the request and log it
   const { body } = req;
   const json : TransferTransaction[] = body;
-  logger.info(json);
 
   // get the socket
   await fetch(`https://${process.env.DOMAIN_URL}/api/socket`);
 
   // loop through the transactions and emit them to the socket
+  // for both swaps and transfers the first instruction is the one we want
   for (const tx of json) {
-    for (const element of tx.instructions) {
-      const data: TxData = {
-        accounts: element.accounts,
-      };
-      res.socket.server.io?.emit('tx', data);
-      for (const elem of element.innerInstructions) {
-        const dataInner: TxData = {
-          accounts: elem.accounts,
-        };
-        res.socket.server.io?.emit('tx', dataInner);
-      }
-    }
+    res.socket.server.io?.emit('transfer', tx.instructions[0].accounts);
   }
 
   return res.status(200).json({ success: true });

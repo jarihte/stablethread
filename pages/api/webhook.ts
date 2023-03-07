@@ -4,10 +4,6 @@ import type { Socket as NetSocket } from 'net';
 import type { Server as IOServer } from 'socket.io';
 import type { Server as HTTPServer } from 'http';
 
-type TxData = {
-  accounts: string[];
-};
-
 interface SocketServer extends HTTPServer {
   io: IOServer | undefined
 }

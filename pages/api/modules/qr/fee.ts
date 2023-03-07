@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { getPythProgramKeyForCluster, PythHttpClient } from '@pythnetwork/client';
 import { createTransfer } from '@solana/pay';
-import { PublicKey, Connection, Transaction } from '@solana/web3.js';
+import {
+  PublicKey, Connection, Transaction, AccountMeta,
+} from '@solana/web3.js';
 import BigNumber from 'bignumber.js';
 import pino from 'pino';
 

@@ -1,6 +1,8 @@
 /* eslint-disable max-len */
 import { createTransfer } from '@solana/pay';
-import { Connection, PublicKey, Transaction } from '@solana/web3.js';
+import {
+  Connection, PublicKey, Transaction, AccountMeta,
+} from '@solana/web3.js';
 import BigNumber from 'bignumber.js';
 import pino from 'pino';
 import swap from './swap';
@@ -29,7 +31,7 @@ export default async function createTransaction({
   reference,
 }: TxParams) : Promise<Transaction> {
 // Create a transaction to transfer the amount to the receiver.
-  let transaction;
+  let transaction : Transaction;
   if (splToken && settlement) {
   // if the token is the same as the settlement token, then just transfer the token
     if (splToken.equals(settlement)) {
@@ -41,12 +43,7 @@ export default async function createTransaction({
       }, { commitment: 'confirmed' });
     } else {
     // otherwise, swap the token to the settlement token
-      transaction = await createTransfer(connection, sender, {
-        recipient,
-        amount: new BigNumber('0.000000001').decimalPlaces(9, BigNumber.ROUND_UP),
-        reference,
-      }, { commitment: 'confirmed' });
-      const transactionSwap = await swap({
+      transaction = await swap({
         logger,
         sender,
         recipient,
@@ -55,7 +52,12 @@ export default async function createTransaction({
         amount: amount.multipliedBy(1000000).toString(),
         slippageBps: slippage,
       });
-      transaction.add(transactionSwap);
+      const accountMeta : AccountMeta = {
+        pubkey: reference,
+        isSigner: false,
+        isWritable: true,
+      };
+      transaction.instructions[0].keys.push(accountMeta);
     }
   } else if (splToken && !settlement) {
   // if the token is provided, but the settlement token is not, then just transfer the token
@@ -67,12 +69,7 @@ export default async function createTransaction({
     }, { commitment: 'confirmed' });
   } else if (!splToken && settlement) {
   // if the settlement token is provided, but the token is not, then swap SOL to the settlement token
-    transaction = await createTransfer(connection, sender, {
-      recipient,
-      amount: new BigNumber('0.000000001').decimalPlaces(9, BigNumber.ROUND_UP),
-      reference,
-    }, { commitment: 'confirmed' });
-    const transactionSwap = await swap({
+    transaction = await swap({
       logger,
       sender,
       recipient,
@@ -81,7 +78,12 @@ export default async function createTransaction({
       amount: amount.multipliedBy(1000000).toString(),
       slippageBps: slippage,
     });
-    transaction.add(transactionSwap);
+    const accountMeta : AccountMeta = {
+      pubkey: reference,
+      isSigner: false,
+      isWritable: true,
+    };
+    transaction.instructions[0].keys.push(accountMeta);
   } else {
   // otherwise, just transfer SOL
     transaction = await createTransfer(connection, sender, {

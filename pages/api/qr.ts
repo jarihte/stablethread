@@ -8,6 +8,11 @@ import pretty from 'pino-pretty';
 import createFee from './modules/qr/fee';
 import createTransaction from './modules/qr/tx';
 
+type Token = {
+  name: string,
+  key: PublicKey,
+};
+
 async function get(req: NextApiRequest, res: NextApiResponse) {
   res.status(200).json({
     label: 'ArchPaid',
@@ -70,44 +75,51 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
       logger.error('missing partner', req.query);
       throw new Error('missing partner');
     }
+    if (!settlementParam) {
+      logger.error('missing settlement', req.query);
+      throw new Error('missing settlement');
+    }
+    if (!paymentParam) {
+      logger.error('missing payment', req.query);
+      throw new Error('missing payment');
+    }
 
     const partner = new PublicKey(partnerParam as string);
     const merchant = new PublicKey(merchantParam as string);
     const reference = new PublicKey(referenceParam as string);
 
     // create settlement public key
-    let settlement: PublicKey | undefined;
-    if (settlementParam) {
-      switch (settlementParam) {
-        case 'SOL':
-          settlement = new PublicKey('So11111111111111111111111111111111111111112');
-          break;
-        case 'USDC':
-          settlement = new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v');
-          break;
-        case 'USDT':
-          settlement = new PublicKey('Es9vSDaG9rCq8ZDzQVp9o1mWYjAqyKkG8rLzg8uVp9rj');
-          break;
-        default:
-          logger.error('invalid settlement', req.query);
-          throw new Error('invalid settlement');
-      }
+    let settlement: Token;
+    switch (settlementParam) {
+      case 'SOL':
+        settlement = { name: 'SOL', key: new PublicKey('So11111111111111111111111111111111111111112') };
+        break;
+      case 'USDC':
+        settlement = { name: 'USDC', key: new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v') };
+        break;
+      case 'USDT':
+        settlement = { name: 'USDT', key: new PublicKey('Es9vSDaG9rCq8ZDzQVp9o1mWYjAqyKkG8rLzg8uVp9rj') };
+        break;
+      default:
+        logger.error('invalid settlement', req.query);
+        throw new Error('invalid settlement');
     }
 
     // create payment public key
-    let payment: PublicKey | undefined;
-    if (paymentParam) {
-      switch (paymentParam) {
-        case 'USDC':
-          payment = new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v');
-          break;
-        case 'USDT':
-          payment = new PublicKey('Es9vSDaG9rCq8ZDzQVp9o1mWYjAqyKkG8rLzg8uVp9rj');
-          break;
-        default:
-          logger.error('invalid payment', req.query);
-          throw new Error('invalid payment');
-      }
+    let payment: Token;
+    switch (paymentParam) {
+      case 'SOL':
+        payment = { name: 'SOL', key: new PublicKey('So11111111111111111111111111111111111111112') };
+        break;
+      case 'USDC':
+        payment = { name: 'USDC', key: new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v') };
+        break;
+      case 'USDT':
+        payment = { name: 'USDT', key: new PublicKey('Es9vSDaG9rCq8ZDzQVp9o1mWYjAqyKkG8rLzg8uVp9rj') };
+        break;
+      default:
+        logger.error('invalid payment', req.query);
+        throw new Error('invalid payment');
     }
 
     // create amount
@@ -133,7 +145,7 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
     });
 
     // Add fee
-    const transactionwithFee = await createFee({
+    const transactionWithFee = await createFee({
       logger,
       connection,
       sender,
@@ -143,7 +155,7 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
     });
 
     // Serialize and return the unsigned transaction.
-    const serializedTransaction = transactionwithFee.serialize({
+    const serializedTransaction = transactionWithFee.serialize({
       verifySignatures: false,
       requireAllSignatures: false,
     });

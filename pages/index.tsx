@@ -44,12 +44,12 @@ export default async function Component() {
   // the merchant address to send the transfer - collects 10% of the ArchPaid fee - required parameter
   const merchant = '2LRnpYKkfGQBBGAJbU5V6uKrYVH57uH5gx75ksbbNbLn';
   
-  // the SPL token to transfer - in this case USDC - optional parameter
-  // 'USDC' or 'USDT' (must be uppercase)
+  // the token of the payment transaction - required parameter
+  // 'SOL' or 'USDC' or 'USDT' (must be uppercase)
   const payment = 'USDC';
 
-  // the token to settle the transaction - in this case USDT - optional parameter - uses Jupiter with 50bps slippage
-  // 'USDC' or 'USDT' or 'SOL' (must be uppercase)
+  // the token to settle the transaction - required parameter - uses Jupiter with 50bps slippage
+  // 'SOL', 'USDC' or 'USDT' (must be uppercase)
   const settlement = 'USDT';
 
   // the partner address to collect 20% of the ArchPaid fee - must not be merchant address - required parameter

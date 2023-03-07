@@ -7,11 +7,16 @@ import BigNumber from 'bignumber.js';
 import pino from 'pino';
 import swap from './swap';
 
+type Token = {
+  name: string,
+  key: PublicKey,
+};
+
 type TxParams = {
   logger: pino.Logger,
   connection: Connection,
-  payment: PublicKey | undefined,
-  settlement: PublicKey | undefined,
+  payment: Token,
+  settlement: Token,
   sender: PublicKey,
   recipient: PublicKey,
   amount: BigNumber,
@@ -32,49 +37,29 @@ export default async function createTransaction({
 }: TxParams) : Promise<Transaction> {
 // Create a transaction to transfer the amount to the receiver.
   let transaction : Transaction;
-  if (payment && settlement) {
-  // if the token is the same as the settlement token, then just transfer the token
-    if (payment.equals(settlement)) {
-      transaction = await createTransfer(connection, sender, {
-        recipient,
-        amount,
-        splToken: payment,
-        reference,
-      }, { commitment: 'confirmed' });
-    } else {
-    // otherwise, swap the token to the settlement token
-      transaction = await swap({
-        logger,
-        sender,
-        recipient,
-        inputMint: payment.toBase58(),
-        outputMint: settlement.toBase58(),
-        amount: amount.multipliedBy(1000000).toString(),
-        slippageBps: slippage,
-      });
-      const accountMeta : AccountMeta = {
-        pubkey: reference,
-        isSigner: false,
-        isWritable: true,
-      };
-      transaction.instructions[0].keys.push(accountMeta);
-    }
-  } else if (payment && !settlement) {
-  // if the token is provided, but the settlement token is not, then just transfer the token
+  // if the payment token is SOL and the settlement token is SOL, then just transfer SOL
+  if (payment.name === 'SOL' && settlement.name === 'SOL') {
+    transaction = await createTransfer(connection, sender, {
+      recipient,
+      reference,
+      amount: new BigNumber(amount).decimalPlaces(9, BigNumber.ROUND_UP),
+    }, { commitment: 'confirmed' });
+  } else if (payment.name === settlement.name) {
+    // if the payment token is the same as the settlement token, then just transfer the payment token
     transaction = await createTransfer(connection, sender, {
       recipient,
       amount,
-      splToken: payment,
+      splToken: payment.key,
       reference,
     }, { commitment: 'confirmed' });
-  } else if (!payment && settlement) {
-  // if the settlement token is provided, but the token is not, then swap SOL to the settlement token
+  } else {
+    // otherwise, swap the payment token to the settlement token
     transaction = await swap({
       logger,
       sender,
       recipient,
-      inputMint: 'So11111111111111111111111111111111111111112',
-      outputMint: settlement.toBase58(),
+      inputMint: payment.key.toBase58(),
+      outputMint: settlement.key.toBase58(),
       amount: amount.multipliedBy(1000000).toString(),
       slippageBps: slippage,
     });
@@ -84,13 +69,6 @@ export default async function createTransaction({
       isWritable: true,
     };
     transaction.instructions[0].keys.push(accountMeta);
-  } else {
-  // otherwise, just transfer SOL
-    transaction = await createTransfer(connection, sender, {
-      recipient,
-      reference,
-      amount: new BigNumber(amount).decimalPlaces(9, BigNumber.ROUND_UP),
-    }, { commitment: 'confirmed' });
   }
 
   return transaction;

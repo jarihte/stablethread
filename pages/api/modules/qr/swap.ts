@@ -76,7 +76,7 @@ export default async function swap({
 }: SwapParams) : Promise<Transaction> {
   // create query string
   const asLegacyTransaction = true;
-  const onlyDirectRoutes = false;
+  const onlyDirectRoutes = true;
   const swapMode = 'ExactOut';
   const qString = qs.stringify({
     inputMint,

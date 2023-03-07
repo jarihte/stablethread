@@ -60,27 +60,27 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
 
     // Check that all required values are present.
     if (!amountParam) {
-      logger.error('missing amount', req.query);
+      logger.error('missing amount');
       throw new Error('missing amount');
     }
     if (!merchantParam) {
-      logger.error('missing merchant', req.query);
+      logger.error('missing merchant');
       throw new Error('missing merchant');
     }
     if (!referenceParam) {
-      logger.error('missing reference', req.query);
+      logger.error('missing reference');
       throw new Error('missing reference');
     }
     if (!partnerParam) {
-      logger.error('missing partner', req.query);
+      logger.error('missing partner');
       throw new Error('missing partner');
     }
     if (!settlementParam) {
-      logger.error('missing settlement', req.query);
+      logger.error('missing settlement');
       throw new Error('missing settlement');
     }
     if (!paymentParam) {
-      logger.error('missing payment', req.query);
+      logger.error('missing payment');
       throw new Error('missing payment');
     }
 
@@ -98,10 +98,10 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
         settlement = { name: 'USDC', key: new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v') };
         break;
       case 'USDT':
-        settlement = { name: 'USDT', key: new PublicKey('Es9vSDaG9rCq8ZDzQVp9o1mWYjAqyKkG8rLzg8uVp9rj') };
+        settlement = { name: 'USDT', key: new PublicKey('Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB') };
         break;
       default:
-        logger.error('invalid settlement', req.query);
+        logger.error('invalid settlement');
         throw new Error('invalid settlement');
     }
 
@@ -115,10 +115,10 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
         payment = { name: 'USDC', key: new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v') };
         break;
       case 'USDT':
-        payment = { name: 'USDT', key: new PublicKey('Es9vSDaG9rCq8ZDzQVp9o1mWYjAqyKkG8rLzg8uVp9rj') };
+        payment = { name: 'USDT', key: new PublicKey('Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB') };
         break;
       default:
-        logger.error('invalid payment', req.query);
+        logger.error('invalid payment');
         throw new Error('invalid payment');
     }
 

@@ -50,6 +50,7 @@ export default async function Component() {
 
   // the token to settle the transaction - required parameter - uses Jupiter with 50bps slippage
   // 'SOL', 'USDC' or 'USDT' (must be uppercase)
+  // Note: only 'SOL' settlement is supported by a 'SOL' payment
   const settlement = 'USDT';
 
   // the partner address to collect 20% of the ArchPaid fee - must not be merchant address - required parameter

@@ -2,7 +2,7 @@ const contentData = [
   {
     title: 'One-Time Payments',
     description:
-      'ArchPaid enables you to accept payments in SOL or any SPL token with one API call.',
+      'ArchPaid enables you to accept payments in SOL, USDC, or USDT with one API call.',
   },
   {
     title: 'Instant Settlement with Notification',

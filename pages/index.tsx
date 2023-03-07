@@ -56,7 +56,7 @@ export default async function Component() {
   const partner = '6otdmKAVQXrYFWjM1mueg61bFnTHARimH7jfGX4WxpgV';
   
   // create the query string
-  const qString = qs.stringify({ amount, merchant, reference, splToken, settlement, partner });
+  const qString = qs.stringify({ amount, merchant, reference, payment, settlement, partner });
 
   // create the QR code
   const qrLink = createQR(encodeURL({

@@ -61,9 +61,9 @@ export default async function Component() {
   
   // create the query string
   const qString = qs.stringify({ 
+    reference, 
     fiat,
     amount, 
-    reference, 
     payment, 
     settlement,
     merchant, 

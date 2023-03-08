@@ -20,6 +20,10 @@ Solana Pay made simple
 ### Links
 * Live at [StableThread](https://stablethread.com)
 * Live example at [CircleSub](https://circlesub.com/tip/komdodx)
+* CodeSandbox example at [CodeSandbox](https://codesandbox.io/s/stablethead-example-3v04oe?file=/src/App.tsx)
+
+### Testing Instructions
+* Visit the CodeSandbox example at [CodeSandbox](https://codesandbox.io/s/stablethead-example-3v04oe?file=/src/App.tsx)
 
 ### Required ENV Vars:
 * HELIUS_RPC={Solana RPC HTTPS URL}

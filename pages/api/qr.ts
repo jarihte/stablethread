@@ -6,6 +6,7 @@ import NextCors from 'nextjs-cors';
 import pino from 'pino';
 import pretty from 'pino-pretty';
 import createFee from './modules/qr/fee';
+import createPaymentAmountFromFiat from './modules/qr/fiat';
 import createTransaction from './modules/qr/tx';
 
 type Token = {
@@ -51,6 +52,7 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
     // Get values from the query string
     const {
       amount: amountParam,
+      fiat: fiatParam,
       merchant: merchantParam,
       reference: referenceParam,
       payment: paymentParam,
@@ -83,6 +85,10 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
       logger.error('missing payment');
       throw new Error('missing payment');
     }
+    if (!fiatParam) {
+      logger.error('missing fiat');
+      throw new Error('missing fiat');
+    }
 
     const partner = new PublicKey(partnerParam as string);
     const merchant = new PublicKey(merchantParam as string);
@@ -91,9 +97,6 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
     // create settlement public key
     let settlement: Token;
     switch (settlementParam) {
-      case 'SOL':
-        settlement = { name: 'SOL', key: new PublicKey('So11111111111111111111111111111111111111112') };
-        break;
       case 'USDC':
         settlement = { name: 'USDC', key: new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v') };
         break;
@@ -108,9 +111,6 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
     // create payment public key
     let payment: Token;
     switch (paymentParam) {
-      case 'SOL':
-        payment = { name: 'SOL', key: new PublicKey('So11111111111111111111111111111111111111112') };
-        break;
       case 'USDC':
         payment = { name: 'USDC', key: new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v') };
         break;
@@ -123,7 +123,15 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
     }
 
     // create amount
-    const amount = new BigNumber(amountParam as string).decimalPlaces(9, BigNumber.ROUND_UP);
+    const fiat = fiatParam as string;
+    const fiatAmount = new BigNumber(amountParam as string).decimalPlaces(2, BigNumber.ROUND_UP);
+    const amount = await createPaymentAmountFromFiat({
+      logger,
+      connection,
+      fiat,
+      payment,
+      fiatAmount,
+    });
 
     // Check that all values are valid.
     if (partner === merchant) {

@@ -38,24 +38,37 @@ export default async function Component() {
   // the reference to track the transfer (must be unique per transaction) - required parameter
   const reference = new Keypair().publicKey.toBase58();
 
-  // the amount to transfer - required parameter
+  // the fiat currency to pay in the transaction - converted to SOL, USDC, or USDT - required parameter
+  // Supported Fiat: USD, CAD
+  const fiat = 'USD';
+
+  // the amount to transfer - will be rounded up to 2 decimal places - required parameter
   const amount = '0.01';
-  
-  // the merchant address to send the transfer - collects 10% of the fee - required parameter
-  const merchant = '2LRnpYKkfGQBBGAJbU5V6uKrYVH57uH5gx75ksbbNbLn';
   
   // the token of the payment transaction - required parameter
   const payment = 'USDC';
 
   // the token to settle the transaction - required parameter - uses Jupiter with 50bps slippage
-  // Supported Pairs (payment/settlement): SOL/USDC, SOL/USDT, USDC/USDT, SOL/SOL, USDC/USDC, USDT/USDT
+  // Supported Pairs (payment/settlement): 
+  // USDC/USDT (swap), USDC/USDC (transfer), USDT/USDT (transfer)
   const settlement = 'USDT';
 
+  // the merchant address to send the transfer - collects 10% of the fee - required parameter
+  const merchant = '2LRnpYKkfGQBBGAJbU5V6uKrYVH57uH5gx75ksbbNbLn';
+  
   // the partner address to collect 20% of the fee - must not be merchant address - required parameter
   const partner = '6otdmKAVQXrYFWjM1mueg61bFnTHARimH7jfGX4WxpgV';
   
   // create the query string
-  const qString = qs.stringify({ amount, merchant, reference, payment, settlement, partner });
+  const qString = qs.stringify({ 
+    fiat,
+    amount, 
+    reference, 
+    payment, 
+    settlement,
+    merchant, 
+    partner,
+  });
 
   // create the QR code
   const qrLink = createQR(encodeURL({

@@ -37,15 +37,8 @@ export default async function createTransaction({
 }: TxParams) : Promise<Transaction> {
 // Create a transaction to transfer the amount to the receiver.
   let transaction : Transaction;
-  // if the payment token is SOL and the settlement token is SOL, then just transfer SOL
-  if (payment.name === 'SOL' && settlement.name === 'SOL') {
-    transaction = await createTransfer(connection, sender, {
-      recipient,
-      reference,
-      amount: new BigNumber(amount).decimalPlaces(9, BigNumber.ROUND_UP),
-    }, { commitment: 'confirmed' });
-  } else if (payment.name === settlement.name) {
-    // if the payment token is the same as the settlement token, then just transfer the payment token
+  // if the payment token is the same as the settlement token, then just transfer the payment token
+  if (payment.name === settlement.name) {
     transaction = await createTransfer(connection, sender, {
       recipient,
       amount,
@@ -60,7 +53,7 @@ export default async function createTransaction({
       recipient,
       inputMint: payment.key.toBase58(),
       outputMint: settlement.key.toBase58(),
-      amount: amount.multipliedBy(1000000).toString(),
+      amount: amount.multipliedBy(1000000).decimalPlaces(0, BigNumber.ROUND_UP).toString(),
       slippageBps: slippage,
     });
     const accountMeta : AccountMeta = {

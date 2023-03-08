@@ -2,7 +2,7 @@ const contentData = [
   {
     title: 'One-Time Payments',
     description:
-      'StableThread enables you to accept payments in SOL, USDC, or USDT with one API call.',
+      'StableThread enables you to accept payments in USDC or USDT via USD or CAD pricing on Solana Pay.',
   },
   {
     title: 'Instant Settlement with Notification',
@@ -12,7 +12,7 @@ const contentData = [
   {
     title: 'Settlement Swaps',
     description:
-      'Pay and receive in different tokens using auto swapping. Currently supports SOL, USDC, and USDT.',
+      'Auto swap when paying in USDC and settling in USDT.',
   },
   {
     title: 'Fee Sharing',

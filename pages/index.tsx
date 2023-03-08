@@ -38,7 +38,7 @@ export default async function Component() {
   // the reference to track the transfer (must be unique per transaction) - required parameter
   const reference = new Keypair().publicKey.toBase58();
 
-  // the fiat currency to pay in the transaction - converted to SOL, USDC, or USDT - required parameter
+  // the fiat currency to price in the payment token - required parameter
   // Supported Fiat: USD, CAD
   const fiat = 'USD';
 

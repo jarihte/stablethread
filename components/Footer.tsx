@@ -11,6 +11,9 @@ function Footer() {
       <p>
         <Link href="/privacy">Privacy Policy</Link>
       </p>
+      <p>
+        <Link href="/providers">Providers</Link>
+      </p>
     </div>
   );
 }

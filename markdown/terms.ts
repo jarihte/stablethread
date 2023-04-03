@@ -1,22 +1,22 @@
 const string = `### TERMS OF SERVICE/USE
 
-#### LAST REVISED ON: 09/01/2021
+#### LAST REVISED ON: 04/02/2023
 
 #### COMPANY
 
-UPBASE INC. and its affiliated entities (“Company”, “us”, “our”, and “we”)
+STABLETHREAD INC. and its affiliated entities (“Company”, “us”, “our”, and “we”)
 
 #### COMPANY CONTACT INFORMATION:
 
-Attention: Upbase, Inc.
+Attention: StableThread, Inc.
 
 651 N Broad St., Suite 206
 
 Middletown, DE 19709
 
-Email: hello@circlesub.com
+Email: hello@stablethread.com
 
-COMPANY WEBSITE: The website located at [circlesub.com] and [stablethread.com] (together with any websites on related domains or
+COMPANY WEBSITE: The website located at [circlesub.com], [stablethread.com], and [archpaid.com] (together with any websites on related domains or
 subdomains, the “Site”).
 
 ### AGREEMENT

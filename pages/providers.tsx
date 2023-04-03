@@ -30,6 +30,9 @@ const component : NextPageWithLayout = () => (
           <li>
             <a href="https://pyth.network" target="_blank" rel="noopener noreferrer">Pyth Network</a>
           </li>
+          <li>
+            <a href="https://meld.io" target="_blank" rel="noopener noreferrer">Meld</a>
+          </li>
         </ul>
       </div>
     </div>
